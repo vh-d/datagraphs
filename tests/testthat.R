@@ -1,4 +1,4 @@
 library(testthat)
-library(datagraph)
+library(datagraphs)
 
-test_check("datagraph")
+test_check("datagraphs")

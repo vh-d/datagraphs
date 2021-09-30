@@ -122,7 +122,7 @@ are_adjacent <- function(graph, ...) {
 #'
 #' @examples
 neighbors <- function(graph, ...) {
-  UseMethod("neightbors", graph)
+  UseMethod("neighbors", graph)
 }
 
 #' Title
@@ -165,5 +165,7 @@ neighbors_out <- function(graph, ...) {
 detect_cycles <- function(graph, ...) {
   UseMethod("detect_cycles", graph)
 }
+
+
 
 

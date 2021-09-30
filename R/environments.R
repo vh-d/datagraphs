@@ -2,18 +2,36 @@
 datagraph <- function() {
   obj <- new.env()
   class(obj) <- c("datagraph")
+  return(obj)
+}
 
+#' @export
+datagraph_vertex <- function() {
+  obj <- new.env()
+  class(obj) <- c("datagraph_vertex")
   return(obj)
 }
 
 #' @export
 all.equal.datagraph <- function(current, target) {
-  res <- vector("character", size = 1)
-  if (!setequal(ls(current, sorted = FALSE), ls(target, sorted = FALSE))) res[[1]] <- "Different set of vertices"
+  if (!setequal(ls(current, sorted = FALSE), ls(target, sorted = FALSE))) return("Different set of vertices")
 
-  if (all(is.na(res))) return(TRUE) else return(res)
+  res2 <- mapply(all.equal, as.list(current), as.list(target))
+  if (!(is.logical(res2))) {
+    if (!length(res2)) return(TRUE)
+    if (is.list(res2)) {
+      return(names(which(sapply(res2, is.character), TRUE)))
+    }
+    return(res2)
+  }
+
+  return(TRUE)
 }
 
+
+all.equal.datagraph_vertex <- function(current, target) {
+  all.equal.environment(current, target)
+}
 
 #' @export
 check.datagraph <- function(graph) {
@@ -142,11 +160,11 @@ add_edges.datagraph <- function(graph, edges) {
   lto   <- split(edges, by = "to")
 
   for (i in lfrom) {
-    graph[[i$from[1]]][["to"]] <- i[["to"]]
+    try(graph[[i$from[1]]][["to"]] <- i[["to"]], silent = TRUE) # TODO: more careful handling of non-existent vertices
   }
 
   for (j in lto) {
-    graph[[j$to[1]]][["from"]] <- j[["from"]]
+    try(graph[[j$to[1]]][["from"]] <- j[["from"]], silent = TRUE)
   }
 
   return(invisible(graph))
@@ -227,7 +245,7 @@ neighbors_in.datagraph <- function(graph, vertices, useNames = TRUE) {
 }
 
 #' @export
-neighbors_outdatagraph_vertex <- function(vertex) {
+neighbors_out.datagraph_vertex <- function(vertex) {
   vertex[["to"]]
 }
 
@@ -237,8 +255,8 @@ neighbors_out.datagraph <- function(graph, vertices, useNames = TRUE) {
 }
 
 #' @export
-neighbors.datagraph <- function(graph, vertices, type = c("in", "out", "all")) {
-  switch (type,
+neighbors.datagraph <- function(graph, vertices, mode = c("in", "out", "all")) {
+  switch (mode,
     "in"  = neighbors_in(graph, vertices),
     "out" = neighbors_out(graph, vertices),
     "all" =
@@ -252,23 +270,29 @@ neighbors.datagraph <- function(graph, vertices, type = c("in", "out", "all")) {
 
 #' @export
 copy_vertex <- function(vertex) {
-  newobj <- new.env()
+  newvertex <- datagraph_vertex()
   for (i in ls(vertex, sorted = FALSE)) {
-    assign(i, value = vertex[[i]]) # TODO: deep copy for objects passed by reference
+    assign(i, value = vertex[[i]], envir = newvertex) # TODO: deep copy for objects passed by reference
   }
-  class(newobj) <- "datagraph_vertex"
-
-  return(newobj)
+  return(newvertex)
 }
 
 
 #' @export
-copy_graph <- function(graph) {
-  newgraph <- datagraph()
-  for (i in ls(graph, sorted = FALSE)) {
-    new_vertex <- copy_vertex(graph[[i]])
-    parent.env(new_vertex) <- newgraph
-    assign(i, new_vertex, envir = newgraph)
+copy_graph <- function(graph, as_list = FALSE) {
+  if (!isTRUE(as_list)) {
+    newgraph <- datagraph()
+    for (i in ls(graph, sorted = FALSE)) {
+      new_vertex <- copy_vertex(graph[[i]])
+      parent.env(new_vertex) <- newgraph
+      assign(i, new_vertex, envir = newgraph)
+    }
+  } else {
+    newgraph <- vector("list", length(graph))
+    for (i in ls(graph, sorted = FALSE)) {
+      new_vertex <- copy_vertex(graph[[i]])
+      newlist[[i]] <- new_vertex
+    }
   }
 
   return(newgraph)
@@ -291,5 +315,21 @@ detect_cycles.datagraph <- function(graph) {
 
   class(newgraph) <- c("datagraph_subgraph", "datagraph")
 
+  return(newgraph)
+}
+
+#' @importFrom igraph union
+#' @export
+union.datagraph <- function(...) {
+  union_list_of_graph(list(...))
+}
+
+#' @export
+union_list_of_graphs <- function(x) {
+  newgraph <- datagraph()
+  for (i in x) {
+    coi <- copy_graph(i, as_list = TRUE)
+    list2env(coi, newgraph)
+  }
   return(newgraph)
 }
