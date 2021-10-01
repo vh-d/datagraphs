@@ -105,7 +105,7 @@ as.data.table.datagraph <- function(graph) {
   for (i in ls(graph, sorted = FALSE)) {
     l[[i]] <- as.data.table(graph[[i]])
   }
-  setkey(rbindlist(l), id)
+  setkey(rbindlist(l, use.names = TRUE, fill = TRUE), id)
 }
 
 #' @importFrom igraph as.igraph
@@ -186,8 +186,8 @@ are_adjacent.datagraph <- function(graph, vertex1, vertex2) {
 remove_vertex.datagraph <- function(graph, vertex, ...) {
   from = graph[[vertex]]$from
   to   = graph[[vertex]]$to
-  if (length(to))   remove_edges(graph, data.frame(from = vertex, to = to))
-  if (length(from)) remove_edges(graph, data.frame(from = from, to = vertex))
+  if (length(to))   remove_edges(graph, data.table(from = vertex, to = to))
+  if (length(from)) remove_edges(graph, data.table(from = from, to = vertex))
   remove(list = vertex, envir = graph)
 
   return(invisible(graph))
@@ -253,6 +253,7 @@ neighbors_in.datagraph_vertex <- function(vertex) {
 
 #' @export
 neighbors_in.datagraph <- function(graph, vertices, useNames = TRUE) {
+  vertices <- intersect(V(graph), vertices)
   unlist(lapply(mget(vertices, envir = graph), neighbors_in.datagraph_vertex), use.names = useNames)
 }
 
@@ -263,11 +264,13 @@ neighbors_out.datagraph_vertex <- function(vertex) {
 
 #' @export
 neighbors_out.datagraph <- function(graph, vertices, useNames = TRUE) {
+  vertices <- intersect(V(graph), vertices)
   unlist(lapply(mget(vertices, envir = graph), neighbors_out.datagraph_vertex), use.names = useNames)
 }
 
 #' @export
 neighbors.datagraph <- function(graph, vertices, mode = c("in", "out", "all")) {
+  mode <- match.arg(mode)
   switch (mode,
     "in"  = neighbors_in(graph, vertices),
     "out" = neighbors_out(graph, vertices),
@@ -351,7 +354,8 @@ detect_cycles.datagraph <- function(graph) {
 
 #' @export
 subset.datagraph <- function(x, subset) {
-  subgraph <- mget(subset, envir = x, mode = "environment")
+  subset <- intersect(V(x), subset)
+  subgraph <- list2env(mget(subset, envir = x, mode = "environment"))
   class(subgraph) <- c("datagraph_subgraph", "datagraph")
 
   return(subgraph)
