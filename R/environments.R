@@ -209,17 +209,15 @@ remove_edges.datagraph <- function(graph, edges) {
 #' @export
 print.datagraph <- function(x, ...) {
   cat("<datagraph>\n")
-  cat(length(x), "vertices")
+  cat(length(x), "vertices:", head(ls(x, sorted = FALSE), 10))
 }
 
 #' @export
 print.datagraph_vertex <- function(x) {
   cat("<datagraph vertex>", x[["id"]], "\n")
-  # cat("edges from: ", x[["from"]][1:x[[".from_len"]]], "\n")
-  # cat("edges to: ",   x[["to"]][1:x[[".to_len"]]], "\n")
-  cat("edges from: ", x[["from"]], "\n")
-  cat("edges to: ",   x[["to"]], "\n")
-  # cat("edges to: ", x[["to"]])
+  cat("edges from:", x[["from"]], "\n")
+  cat("edges to:",   x[["to"]], "\n")
+  cat("Attributes:", setdiff(ls(x, sorted = FALSE), c("id", "from", "to")))
 }
 
 
