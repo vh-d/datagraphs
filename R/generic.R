@@ -152,6 +152,16 @@ neighbors_out <- function(graph, ...) {
   UseMethod("neighbors_out", graph)
 }
 
+#' Title
+#'
+#' @param graph
+#' @param ...
+#'
+#' @return
+#' @export
+neighborhood <- function(graph, ...) {
+  UseMethod("neighborhood", graph)
+}
 
 #' Title
 #'

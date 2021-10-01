@@ -5,11 +5,24 @@ test_that("Creating graphs works", {
 
 test_that("Adding and removing vertices works", {
   dg1 <- datagraph()
+
   add_vertex(dg1, data.frame(id = "A"))
   expect_true(contains_vertex(dg1, "A"))
   expect_identical(dg1[["A"]]$id, "A")
+
   remove_vertex(dg1, "A")
   expect_false(contains_vertex(dg1, "A"))
+
+  add_vertex(dg1, data.frame(id = "A"))
+  add_vertex(dg1, data.frame(id = "B"))
+  expect_length(dg1, 2L)
+  expect_true(contains_vertex(dg1, "A"))
+  expect_true(contains_vertex(dg1, "B"))
+
+  remove_vertices(dg1, c("A", "B"))
+  expect_false(contains_vertex(dg1, "A"))
+  expect_false(contains_vertex(dg1, "B"))
+  expect_length(dg1, 0L)
 })
 
 test_that("Adding and removing edges works", {

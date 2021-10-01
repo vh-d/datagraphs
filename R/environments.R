@@ -276,6 +276,21 @@ neighbors.datagraph <- function(graph, vertices, mode = c("in", "out", "all")) {
 
 
 #' @export
+neighborhood.datagraph <- function(graph, vertices, order = 1000, mode = c("in", "out", "all")) {
+  newvisits <- vertices
+  visited <- newvisits
+  steps <- 0L
+  while (steps < order && length(newvisits) > 0L) {
+    newvisits <- neighbors(graph = graph, vertices = newvisits, mode = mode)
+    newvisits <- setdiff(newvisits, visited)
+    visited <- c(visited, newvisits)
+    steps <- steps + 1L
+  }
+
+  return(visited)
+}
+
+#' @export
 copy_vertex <- function(vertex) {
   newvertex <- datagraph_vertex()
   for (i in ls(vertex, sorted = FALSE)) {
