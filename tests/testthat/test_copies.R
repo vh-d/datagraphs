@@ -12,6 +12,9 @@ test_that("datagraphs can be copied", {
 
   # copy of graphs with vertices and edges
   expect_true(all.equal(dg1, dg3))
+  dg3_list <- copy_graph(dg1, as_list = TRUE)
+  expect_type(dg3_list, "list")
+  expect_identical(length(dg3_list), length(dg3))
 
   # copies are independent
   dg3[["A"]]$data <- 1

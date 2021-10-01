@@ -288,10 +288,13 @@ copy_graph <- function(graph, as_list = FALSE) {
       assign(i, new_vertex, envir = newgraph)
     }
   } else {
-    newgraph <- vector("list", length(graph))
-    for (i in ls(graph, sorted = FALSE)) {
-      new_vertex <- copy_vertex(graph[[i]])
-      newgraph[[i]] <- new_vertex
+    newgraph <- as.list(graph)
+    i <- 0L
+    # iterate and replace by copies
+    for (v in newgraph) {
+      i <- i + 1L
+      newv <- copy_vertex(v)
+      newgraph[[i]] <- newv
     }
   }
 
