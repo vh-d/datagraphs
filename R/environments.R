@@ -79,33 +79,47 @@ as.list.datagraph <- function(x) {
 }
 
 #' @export
-as.list.datagraph_vertex <- function(x) {
-  as.list.environment(x)
-}
-
-#' @importFrom data.table as.data.table
-#' @export
-as.data.table.datagraph_vertex <- function(x) {
-  other_data <- setdiff(names(x), c("id", "from", "to"))
-  obj <- data.table(id = x[["id"]], from = list(x[["from"]]), to = list(x[["to"]]))
-  if (length(other_data)) {
-    for (d in other_data) {
-      dvalue <- x[[d]]
-      obj[, (d) := if (is.atomic(dvalue)) dvalue else list(dvalue)]
-    }
+as.list.datagraph_vertex <- function(x, what = "all") {
+  if (what == "all")      return(as.list.environment(x))
+  if (what == "edges")    return(list(from = x[["from"]], to = x[["to"]]))
+  if (what == "vertices") {
+    obj <- as.list.environment(x)
+    return(obj[-match(c("from", "to"), names(obj))])
   }
-
-  obj[]
 }
 
 #' @importFrom data.table as.data.table
 #' @export
-as.data.table.datagraph <- function(graph) {
+as.data.table.datagraph_vertex <- function(x, what = "all") {
+  obj <-
+    switch(
+      what,
+      "all"      = list(id = x[["id"]], from = list(x[["from"]]), to = list(x[["to"]])),
+      "edges"    = list(from = c(rep(x[["id"]], length(x[["to"]])), x[["from"]]),
+                        to   = c(x[["to"]],                         rep(x[["id"]], length(x[["from"]])))),
+      "vertices" = list(id = x[["id"]])
+    )
+  if (what == "all" || what == "vertices") {
+    other_data <- setdiff(names(x), c("id", "from", "to"))
+    obj <- c(obj, mget(other_data, envir = x))
+  }
+  return(as.data.table(obj))
+}
+
+#' @importFrom data.table as.data.table
+#' @export
+as.data.table.datagraph <- function(graph, what = c("all", "edges", "vertices")) {
+  what <- match.arg(what)
+
   l <- vector("list", length(graph))
   for (i in ls(graph, sorted = FALSE)) {
-    l[[i]] <- as.data.table(graph[[i]])
+    l[[i]] <- as.data.table(graph[[i]], what = what)
   }
-  setkey(rbindlist(l, use.names = TRUE, fill = TRUE), id)
+  obj <- rbindlist(l, use.names = TRUE, fill = TRUE)
+  if (what == "all" || what == "vertices") setkeyv(obj, "id")
+  if (what == "edges") obj <- unique(obj)
+
+  return(obj)
 }
 
 #' @importFrom igraph as.igraph
@@ -147,6 +161,11 @@ add_vertices.datagraph <- function(graph, vertices) {
 #' @export
 V.datagraph <- function(graph, sorted = FALSE) {
   ls(graph, sorted = sorted)
+}
+
+#' @export
+E.datagraph <- function(graph, sorted = FALSE) {
+  as.data.table(graph, what = "edges")
 }
 
 #' @export

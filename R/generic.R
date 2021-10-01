@@ -45,10 +45,16 @@ add_vertices <- function(graph, ...) {
   UseMethod("add_vertices", graph)
 }
 
+
+#' @export
 V <- function(graph, ...) {
   UseMethod("V", graph)
 }
 
+#' @export
+E <- function(graph, ...) {
+  UseMethod("E", graph)
+}
 #' Remove vertices from a graph
 #'
 #' @param graph
