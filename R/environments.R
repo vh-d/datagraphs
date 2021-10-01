@@ -145,6 +145,11 @@ add_vertices.datagraph <- function(graph, vertices) {
 }
 
 #' @export
+V.datagraph <- function(graph, sorted = FALSE) {
+  ls(graph, sorted = sorted)
+}
+
+#' @export
 contains_vertex <- function(graph, vertex) {
   vertex %in% ls(graph, sorted = FALSE)
 }
@@ -342,6 +347,16 @@ detect_cycles.datagraph <- function(graph) {
 
   return(newgraph)
 }
+
+
+#' @export
+subset.datagraph <- function(x, subset) {
+  subgraph <- mget(subset, envir = x, mode = "environment")
+  class(subgraph) <- c("datagraph_subgraph", "datagraph")
+
+  return(subgraph)
+}
+
 
 #' @importFrom igraph union
 #' @export

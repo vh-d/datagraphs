@@ -45,6 +45,9 @@ add_vertices <- function(graph, ...) {
   UseMethod("add_vertices", graph)
 }
 
+V <- function(graph, ...) {
+  UseMethod("V", graph)
+}
 
 #' Remove vertices from a graph
 #'
