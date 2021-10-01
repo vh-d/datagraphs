@@ -160,11 +160,13 @@ add_edges.datagraph <- function(graph, edges) {
   lto   <- split(edges, by = "to")
 
   for (i in lfrom) {
-    try(graph[[i$from[1]]][["to"]] <- i[["to"]], silent = TRUE) # TODO: more careful handling of non-existent vertices
+    v <- graph[[i$from[1]]]
+    if (!is.null(v)) v[["to"]] <- i[["to"]]
   }
 
   for (j in lto) {
-    try(graph[[j$to[1]]][["from"]] <- j[["from"]], silent = TRUE)
+    v <- graph[[j$to[1]]]
+    if (!is.null(v)) v[["from"]] <- j[["from"]]
   }
 
   return(invisible(graph))
@@ -289,7 +291,7 @@ copy_graph <- function(graph, as_list = FALSE) {
     newgraph <- vector("list", length(graph))
     for (i in ls(graph, sorted = FALSE)) {
       new_vertex <- copy_vertex(graph[[i]])
-      newlist[[i]] <- new_vertex
+      newgraph[[i]] <- new_vertex
     }
   }
 
