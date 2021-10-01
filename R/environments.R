@@ -189,6 +189,13 @@ remove_vertex.datagraph <- function(graph, vertex, ...) {
 }
 
 #' @export
+remove_vertices.datagraph <- function(graph, vertices, ...) {
+  lapply(vertices, remove_vertex.datagraph, graph = graph)
+
+  return(invisible(graph))
+}
+
+#' @export
 remove_edge.datagraph <- function(graph, edge) {
   vertex_from <- graph[[edge$from]]
   vertex_to   <- graph[[edge$to]]
