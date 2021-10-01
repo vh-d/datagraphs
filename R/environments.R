@@ -331,7 +331,7 @@ detect_cycles.datagraph <- function(graph) {
 #' @importFrom igraph union
 #' @export
 union.datagraph <- function(...) {
-  union_list_of_graph(list(...))
+  union_list_of_graphs(list(...))
 }
 
 #' @export
