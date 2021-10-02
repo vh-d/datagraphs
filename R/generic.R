@@ -80,6 +80,19 @@ remove_vertices <- function(graph, vertices, ...) {
   UseMethod("remove_vertices", graph)
 }
 
+#' Title
+#'
+#' @param graph
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+add_edge <- function(graph, ...) {
+  UseMethod("add_edge", graph)
+}
+
 
 #' Title
 #'

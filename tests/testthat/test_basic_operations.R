@@ -30,7 +30,7 @@ test_that("Adding and removing edges works", {
   add_vertex(dg1, data.frame(id = "A"))
   add_vertex(dg1, data.frame(id = "B"))
 
-  add_edges(dg1, data.frame(from = "A", to = "B"))
+  add_edge(dg1, list(from = "A", to = "B"))
   expect_true(are_adjacent(dg1, "A", "B"))
 
   remove_edges(dg1, data.frame(from = "A", to = "B"))
