@@ -30,6 +30,13 @@ as.datagraph <- function(graph, ...) {
   UseMethod("as.datagraph", graph)
 }
 
+#' @param x
+#'
+#' @param ...
+#'
+vertex <- function(x, ...) {
+  UseMethod("vertex", x)
+}
 
 
 #' Title

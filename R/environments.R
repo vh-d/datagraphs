@@ -1,16 +1,40 @@
 #' @export
 datagraph <- function() {
-  obj <- new.env()
-  class(obj) <- c("datagraph")
-  return(obj)
+  graph <- new.env()
+  edges <- new.env(parent = graph)
+  # assign(".edges", edges, envir = graph, inherits = FALSE)
+  class(graph) <- c("datagraph")
+  return(graph)
 }
 
-#' @export
 datagraph_vertex <- function() {
   obj <- new.env()
   class(obj) <- c("datagraph_vertex")
   return(obj)
 }
+
+#' @export
+vertex.default <- function(graph = emptyenv()) {
+  v <- datagraph_vertex()
+  v[["from"]] <- new.env(parent = v)
+  v[["to"]]   <- new.env(parent = v)
+  return(v)
+}
+
+#' @export
+vertex.character <- function(x, from = NULL, to = NULL, ..., graph = emptyenv()) {
+  v <- vertex.default(graph = graph)
+  list2env(list(id = x, from = from, to = to, data = list(...)), envir = v)
+  return(v)
+}
+
+#' @export
+vertex.list <- function(x, graph = emptyenv()) {
+  v <- vertex.default(graph = graph)
+  list2env(x, envir = v)
+  return(v)
+}
+
 
 #' @export
 all.equal.datagraph <- function(current, target) {
@@ -173,6 +197,13 @@ contains_vertex <- function(graph, vertex) {
   vertex %in% ls(graph, sorted = FALSE)
 }
 
+#' @export
+add_edge.datagraph <- function(graph, edge) {
+  vf <- graph[[edge$from]]
+  vt <- graph[[edge$to]]
+  vf[["to"]] <- c(vf[["to"]], edge$to)
+  vt[["from"]] <- c(vf[["from"]], edge$from)
+}
 
 #' @export
 add_edges.datagraph <- function(graph, edges) {
@@ -256,11 +287,16 @@ print.datagraph_vertex <- function(x) {
 
 #' @export
 `[.datagraph` <- function(x, i, j) {
-  iexp <- substitute(i)
-  jexp <- substitute(j)
+  iexp <- if (missing(i)) quote(TRUE) else substitute(i)
+  jexp <- if (missing(j)) quote(data.table(id = id, from = list(from), to = list(to))) else substitute(j)
 
-  ires <- sapply(as.list.environment(x), eval, expr = iexp)
-  ids <- names(which(ires))
+  i <- tryCatch(i, error = function(e) NULL )
+  if (!is.character(i)) {
+    ires <- sapply(as.list.environment(x), eval, expr = iexp)
+    ids <- names(which(ires))
+  } else {
+    ids <- i
+  }
 
   rbindlist(lapply(mget(x = ids, envir = x), eval, expr = jexp))
 }
