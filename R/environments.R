@@ -180,6 +180,7 @@ add_vertices.datagraph <- function(x, vertices) {
   return(invisible(TRUE))
 }
 
+#' @export
 add_vertices.data.table <- function(x, graph) {
   vertices <- setDT(copy(x))
   verticeslist <- split(vertices, by = "id")
@@ -211,7 +212,13 @@ add_edge.datagraph <- function(x, edge) {
 
 #' @export
 add_edges.datagraph <- function(x, edges) {
-  edges <- setDT(copy(edges))
+  add_edges(edges, graph = x)
+  return(invisible(x))
+}
+
+#' @export
+add_edges.data.table <- function(x, graph) {
+  edges <- setDT(copy(x))
   edges[, from := as.character(from)]
   edges[, to   := as.character(to)]
 
@@ -227,8 +234,6 @@ add_edges.datagraph <- function(x, edges) {
     v <- x[[j$to[1]]]
     if (!is.null(v)) v[["from"]] <- j[["from"]]
   }
-
-  return(invisible(x))
 }
 
 #' @export
