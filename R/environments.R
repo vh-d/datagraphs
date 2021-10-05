@@ -333,8 +333,7 @@ neighbors_out.datagraph <- function(x, vertices, useNames = TRUE) {
 }
 
 #' @export
-neighbors.datagraph <- function(x, vertices, mode = c("in", "out", "all")) {
-  mode <- match.arg(mode)
+neighbors.datagraph <- function(x, vertices, mode = "all") {
   switch (mode,
     "in"  = neighbors_in(x, vertices),
     "out" = neighbors_out(x, vertices),
@@ -348,7 +347,7 @@ neighbors.datagraph <- function(x, vertices, mode = c("in", "out", "all")) {
 
 
 #' @export
-neighborhood.datagraph <- function(x, vertices, order = 1000, mode = c("in", "out", "all")) {
+neighborhood.datagraph <- function(x, vertices, order = 1000, mode = "all") {
   newvisits <- vertices
   visited <- newvisits
   steps <- 0L
