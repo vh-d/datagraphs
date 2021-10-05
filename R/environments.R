@@ -417,6 +417,19 @@ subset.datagraph <- function(x, subset) {
 }
 
 
+reconnect_graph <- function(graph) {
+  for (v in as.list(graph)) {
+    vid <- v[["id"]]
+    for (i in mget(v$from, envir = graph, ifnotfound = NA_character_, inherits = FALSE)) {
+      if (!is.na(i)) i$to <- union(i$to, vid)
+    }
+    for (j in mget(v$to, envir = graph, ifnotfound = NA_character_, inherits = FALSE)) {
+      if (!is.na(j)) j$from <- union(j$from, vid)
+    }
+  }
+  return(invisible(graph))
+}
+
 #' @importFrom igraph union
 #' @export
 union.datagraph <- function(...) {
@@ -430,5 +443,6 @@ union_list_of_graphs <- function(x) {
     coi <- copy_graph(i, as_list = TRUE)
     list2env(coi, newgraph)
   }
+  reconnect_graph(newgraph)
   return(newgraph)
 }
