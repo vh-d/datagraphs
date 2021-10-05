@@ -226,12 +226,12 @@ add_edges.data.table <- function(x, graph) {
   lto   <- split(edges, by = "to")
 
   for (i in lfrom) {
-    v <- x[[i$from[1]]]
+    v <- graph[[i$from[1]]]
     if (!is.null(v)) v[["to"]] <- i[["to"]]
   }
 
   for (j in lto) {
-    v <- x[[j$to[1]]]
+    v <- graph[[j$to[1]]]
     if (!is.null(v)) v[["from"]] <- j[["from"]]
   }
 }
