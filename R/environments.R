@@ -474,3 +474,33 @@ union_list_of_graphs <- function(x) {
   reconnect_graph(newgraph)
   return(newgraph)
 }
+
+
+#' @export
+collapse_vertices.datagraph <- function(x, vertices) {
+  v <- mget(vertices, envir = x, inherits = FALSE, ifnotfound = list(NULL))
+  vertices <- vertices[!is.null(v)]
+  v <- v[!is.null(v)]
+
+  from <- vector("list", length(v))
+  to   <- vector("list", length(v))
+  i <- 0L
+  for (ii in v) {
+    i <- i + 1
+    from[[i]] <- ii$from
+    to[[i]]   <- ii$to
+  }
+  from <- unlist(from, recursive = FALSE)
+  to   <- unlist(to,   recursive = FALSE)
+
+  # remove self-links
+  from <- setdiff(from, vertices)
+  to   <- setdiff(to,   vertices)
+
+  # collapse into the first vertex
+  v[[1]]$from <- from
+  v[[1]]$to   <- to
+
+  # remove redundant vertices, only the first one remains
+  remove_vertices.datagraph(x, vertices = vertices[-1])
+}

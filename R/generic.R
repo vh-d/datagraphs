@@ -205,6 +205,17 @@ detect_cycles <- function(x, ...) {
   UseMethod("detect_cycles", x)
 }
 
-
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+collapse_vertices <- function(x, ...) {
+  UseMethod("collapse_vertices", x)
+}
 
 
