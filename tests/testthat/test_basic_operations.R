@@ -6,15 +6,15 @@ test_that("Creating graphs works", {
 test_that("Adding and removing vertices works", {
   dg1 <- datagraph()
 
-  add_vertex(dg1, data.frame(id = "A"))
+  add_vertex(dg1, data.table(id = "A"))
   expect_true(contains_vertex(dg1, "A"))
   expect_identical(dg1[["A"]]$id, "A")
 
   remove_vertex(dg1, "A")
   expect_false(contains_vertex(dg1, "A"))
 
-  add_vertex(dg1, data.frame(id = "A"))
-  add_vertex(dg1, data.frame(id = "B"))
+  add_vertex(dg1, data.table(id = "A"))
+  add_vertex(dg1, data.table(id = "B"))
   expect_length(dg1, 2L)
   expect_true(contains_vertex(dg1, "A"))
   expect_true(contains_vertex(dg1, "B"))
@@ -27,12 +27,12 @@ test_that("Adding and removing vertices works", {
 
 test_that("Adding and removing edges works", {
   dg1 <- datagraph()
-  add_vertex(dg1, data.frame(id = "A"))
-  add_vertex(dg1, data.frame(id = "B"))
+  add_vertex(dg1, data.table(id = "A"))
+  add_vertex(dg1, data.table(id = "B"))
 
   add_edge(dg1, list(from = "A", to = "B"))
   expect_true(are_adjacent(dg1, "A", "B"))
 
-  remove_edges(dg1, data.frame(from = "A", to = "B"))
+  remove_edges(dg1, data.table(from = "A", to = "B"))
   expect_false(are_adjacent(dg1, "A", "B"))
 })
