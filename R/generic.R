@@ -5,29 +5,29 @@
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-check <- function(graph, ...) {
-  UseMethod("check", graph)
+check <- function(x, ...) {
+  UseMethod("check", x)
 }
 
 
-#' Convert to datagraph
+#' Convert to datax
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-as.datagraph <- function(graph, ...) {
-  UseMethod("as.datagraph", graph)
+as.datagraph <- function(x, ...) {
+  UseMethod("as.datagraph", x)
 }
 
 #' @param x
@@ -41,168 +41,168 @@ vertex <- function(x, ...) {
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_vertices <- function(graph, ...) {
-  UseMethod("add_vertices", graph)
+add_vertices <- function(x, ...) {
+  UseMethod("add_vertices", x)
 }
 
 
 #' @export
-V <- function(graph, ...) {
-  UseMethod("V", graph)
+V <- function(x, ...) {
+  UseMethod("V", x)
 }
 
 #' @export
-E <- function(graph, ...) {
-  UseMethod("E", graph)
+E <- function(x, ...) {
+  UseMethod("E", x)
 }
-#' Remove vertices from a graph
+#' Remove vertices from a x
 #'
-#' @param graph
+#' @param x
 #' @param vertex
 #' @param ...
 #'
 #' @return
 #' @export
-remove_vertex <- function(graph, vertex, ...) {
-  UseMethod("remove_vertex", graph)
+remove_vertex <- function(x, vertex, ...) {
+  UseMethod("remove_vertex", x)
 }
 
 
 #' Remove vertices from a graph
 #'
-#' @param graph
+#' @param x
 #' @param vertices
 #' @param ...
 #'
 #' @return
 #' @export
-remove_vertices <- function(graph, vertices, ...) {
-  UseMethod("remove_vertices", graph)
+remove_vertices <- function(x, vertices, ...) {
+  UseMethod("remove_vertices", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_edge <- function(graph, ...) {
-  UseMethod("add_edge", graph)
+add_edge <- function(x, ...) {
+  UseMethod("add_edge", x)
 }
 
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_edges <- function(graph, ...) {
-  UseMethod("add_edges", graph)
+add_edges <- function(x, ...) {
+  UseMethod("add_edges", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-remove_edges <- function(graph, ...) {
-  UseMethod("remove_edges", graph)
+remove_edges <- function(x, ...) {
+  UseMethod("remove_edges", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-are_adjacent <- function(graph, ...) {
-  UseMethod("are_adjacent", graph)
+are_adjacent <- function(x, ...) {
+  UseMethod("are_adjacent", x)
 }
 
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-neighbors <- function(graph, ...) {
-  UseMethod("neighbors", graph)
+neighbors <- function(x, ...) {
+  UseMethod("neighbors", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-neighbors_in <- function(graph, ...) {
-  UseMethod("neighbors_in", graph)
+neighbors_in <- function(x, ...) {
+  UseMethod("neighbors_in", x)
 }
 
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-neighbors_out <- function(graph, ...) {
-  UseMethod("neighbors_out", graph)
+neighbors_out <- function(x, ...) {
+  UseMethod("neighbors_out", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
-neighborhood <- function(graph, ...) {
-  UseMethod("neighborhood", graph)
+neighborhood <- function(x, ...) {
+  UseMethod("neighborhood", x)
 }
 
 #' Title
 #'
-#' @param graph
+#' @param x
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-detect_cycles <- function(graph, ...) {
-  UseMethod("detect_cycles", graph)
+detect_cycles <- function(x, ...) {
+  UseMethod("detect_cycles", x)
 }
 
 

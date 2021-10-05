@@ -4,7 +4,7 @@
 \alias{neighbors_out}
 \title{Title}
 \usage{
-neighbors_out(graph, ...)
+neighbors_out(x, ...)
 }
 \arguments{
 \item{...}{}

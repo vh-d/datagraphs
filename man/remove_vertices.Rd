@@ -4,7 +4,7 @@
 \alias{remove_vertices}
 \title{Remove vertices from a graph}
 \usage{
-remove_vertices(graph, vertices, ...)
+remove_vertices(x, vertices, ...)
 }
 \arguments{
 \item{...}{}

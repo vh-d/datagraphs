@@ -4,7 +4,7 @@
 \alias{are_adjacent}
 \title{Title}
 \usage{
-are_adjacent(graph, ...)
+are_adjacent(x, ...)
 }
 \arguments{
 \item{...}{}

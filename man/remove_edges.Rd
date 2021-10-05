@@ -4,7 +4,7 @@
 \alias{remove_edges}
 \title{Title}
 \usage{
-remove_edges(graph, ...)
+remove_edges(x, ...)
 }
 \arguments{
 \item{...}{}

@@ -4,7 +4,7 @@
 \alias{add_vertices}
 \title{Title}
 \usage{
-add_vertices(graph, ...)
+add_vertices(x, ...)
 }
 \arguments{
 \item{...}{}

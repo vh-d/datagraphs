@@ -4,7 +4,7 @@
 \alias{add_edge}
 \title{Title}
 \usage{
-add_edge(graph, ...)
+add_edge(x, ...)
 }
 \arguments{
 \item{...}{}

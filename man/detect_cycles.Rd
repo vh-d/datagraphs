@@ -4,7 +4,7 @@
 \alias{detect_cycles}
 \title{Title}
 \usage{
-detect_cycles(graph, ...)
+detect_cycles(x, ...)
 }
 \arguments{
 \item{...}{}

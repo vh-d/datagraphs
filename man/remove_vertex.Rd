@@ -2,9 +2,9 @@
 % Please edit documentation in R/generic.R
 \name{remove_vertex}
 \alias{remove_vertex}
-\title{Remove vertices from a graph}
+\title{Remove vertices from a x}
 \usage{
-remove_vertex(graph, vertex, ...)
+remove_vertex(x, vertex, ...)
 }
 \arguments{
 \item{...}{}
@@ -13,5 +13,5 @@ remove_vertex(graph, vertex, ...)
 
 }
 \description{
-Remove vertices from a graph
+Remove vertices from a x
 }

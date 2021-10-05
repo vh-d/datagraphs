@@ -2,9 +2,9 @@
 % Please edit documentation in R/generic.R
 \name{as.datagraph}
 \alias{as.datagraph}
-\title{Convert to datagraph}
+\title{Convert to datax}
 \usage{
-as.datagraph(graph, ...)
+as.datagraph(x, ...)
 }
 \arguments{
 \item{...}{}
@@ -13,5 +13,5 @@ as.datagraph(graph, ...)
 
 }
 \description{
-Convert to datagraph
+Convert to datax
 }

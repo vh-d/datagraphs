@@ -58,15 +58,15 @@ all.equal.datagraph_vertex <- function(current, target) {
 }
 
 #' @export
-check.datagraph <- function(graph) {
+check.datagraph <- function(x) {
   return(TRUE)
 }
 
 
 #' @export
-as.datagraph.igraph <- function(graph, ...) {
-  vertices <- setDT(igraph::as_data_frame(graph, what = "vertices"))
-  edges    <- setDT(igraph::as_data_frame(graph, what = "edges"))
+as.datagraph.igraph <- function(x, ...) {
+  vertices <- setDT(igraph::as_data_frame(x, what = "vertices"))
+  edges    <- setDT(igraph::as_data_frame(x, what = "edges"))
 
   if (!("id" %in% names(vertices))) vertices$id <- rownames(vertices)
   setDT(vertices, key = "id")
@@ -75,23 +75,24 @@ as.datagraph.igraph <- function(graph, ...) {
   obj <- new.env()
   class(obj) <- "datagraph"
 
-  add_vertices.datagraph(graph = obj, vertices = vertices)
-  add_edges.datagraph(graph = obj, edges = edges)
+  add_vertices.datagraph(obj, vertices = vertices)
+  add_edges.datagraph(obj, edges = edges)
 
   return(obj)
 }
 
 #' @export
-as.datagraph.data.table <- function(graph, vertices = NULL) {
+as.datagraph.data.table <- function(x, vertices = NULL) {
   obj <- new.env()
   class(obj) <- "datagraph"
 
   if (is.null(vertices)) {
-    vertices <- graph[, .(id = union(from, to))]
+    vertices <- x[, .(id = union(from, to))]
+    # vertices <- vertices[!is.na(vertices)]
   }
 
-  add_vertices.datagraph(graph = obj, vertices = vertices)
-  add_edges.datagraph(graph = obj, edges = graph)
+  add_vertices.datagraph(obj, vertices = vertices)
+  add_edges.datagraph(obj, edges = x)
 
   return(obj)
 }
@@ -132,12 +133,12 @@ as.data.table.datagraph_vertex <- function(x, what = "all") {
 
 #' @importFrom data.table as.data.table
 #' @export
-as.data.table.datagraph <- function(graph, what = c("all", "edges", "vertices")) {
+as.data.table.datagraph <- function(x, what = c("all", "edges", "vertices")) {
   what <- match.arg(what)
 
-  l <- vector("list", length(graph))
-  for (i in ls(graph, sorted = FALSE)) {
-    l[[i]] <- as.data.table(graph[[i]], what = what)
+  l <- vector("list", length(x))
+  for (i in ls(x, sorted = FALSE)) {
+    l[[i]] <- as.data.table(x[[i]], what = what)
   }
   obj <- rbindlist(l, use.names = TRUE, fill = TRUE)
   if (what == "all" || what == "vertices") setkeyv(obj, "id")
@@ -148,8 +149,8 @@ as.data.table.datagraph <- function(graph, what = c("all", "edges", "vertices"))
 
 #' @importFrom igraph as.igraph
 #' @export
-as.igraph.datagraph <- function(graph) {
-  x <- as.data.table.datagraph(graph)
+as.igraph.datagraph <- function(x) {
+  x <- as.data.table.datagraph(x)
   igraph::graph_from_data_frame(
     d = x[, .(to = unlist(to)), by = .(from = id)],
     vertices = setnames(x[, !c("from", "to"), with = FALSE], "id", "name"),
@@ -158,8 +159,8 @@ as.igraph.datagraph <- function(graph) {
 }
 
 #' @export
-add_vertex <- function(graph, vertex) {
-  obj <- new.env(parent = graph)
+add_vertex <- function(x, vertex) {
+  obj <- new.env(parent = x)
   id <- as.character(vertex[["id"]])
   list2env(vertex, obj)
 
@@ -167,46 +168,49 @@ add_vertex <- function(graph, vertex) {
   obj[["from"]] <- character()
 
   class(obj) <-  "datagraph_vertex"
-  assign(id, obj, envir = graph)
+  assign(id, obj, envir = x)
 
   return(invisible(TRUE))
 }
 
 #' @export
-add_vertices.datagraph <- function(graph, vertices) {
-  vertices <- setDT(copy(vertices))
-  # vertices[, add_vertex(graph, vertex = .SD, id = .BY[["id"]]), by = "id"]
+add_vertices.datagraph <- function(x, vertices) {
+  add_vertices(vertices, graph = x)
+
+  return(invisible(TRUE))
+}
+
+add_vertices.data.table <- function(x, graph) {
+  vertices <- setDT(copy(x))
   verticeslist <- split(vertices, by = "id")
-  lapply(verticeslist, add_vertex, graph = graph)
-
-  return(invisible(TRUE))
+  lapply(verticeslist, add_vertex, x = graph)
 }
 
 #' @export
-V.datagraph <- function(graph, sorted = FALSE) {
-  ls(graph, sorted = sorted)
+V.datagraph <- function(x, sorted = FALSE) {
+  ls(x, sorted = sorted)
 }
 
 #' @export
-E.datagraph <- function(graph, sorted = FALSE) {
-  as.data.table(graph, what = "edges")
+E.datagraph <- function(x, sorted = FALSE) {
+  as.data.table(x, what = "edges")
 }
 
 #' @export
-contains_vertex <- function(graph, vertex) {
-  vertex %in% ls(graph, sorted = FALSE)
+contains_vertex <- function(x, vertex) {
+  vertex %in% ls(x, sorted = FALSE)
 }
 
 #' @export
-add_edge.datagraph <- function(graph, edge) {
-  vf <- graph[[edge$from]]
-  vt <- graph[[edge$to]]
-  vf[["to"]] <- c(vf[["to"]], edge$to)
-  vt[["from"]] <- c(vf[["from"]], edge$from)
+add_edge.datagraph <- function(x, edge) {
+  vf <- x[[edge$from]]
+  vt <- x[[edge$to]]
+  vf[["to"]] <- union(vf[["to"]], edge$to)
+  vt[["from"]] <- union(vf[["from"]], edge$from)
 }
 
 #' @export
-add_edges.datagraph <- function(graph, edges) {
+add_edges.datagraph <- function(x, edges) {
   edges <- setDT(copy(edges))
   edges[, from := as.character(from)]
   edges[, to   := as.character(to)]
@@ -215,59 +219,59 @@ add_edges.datagraph <- function(graph, edges) {
   lto   <- split(edges, by = "to")
 
   for (i in lfrom) {
-    v <- graph[[i$from[1]]]
+    v <- x[[i$from[1]]]
     if (!is.null(v)) v[["to"]] <- i[["to"]]
   }
 
   for (j in lto) {
-    v <- graph[[j$to[1]]]
+    v <- x[[j$to[1]]]
     if (!is.null(v)) v[["from"]] <- j[["from"]]
   }
 
-  return(invisible(graph))
+  return(invisible(x))
 }
 
 #' @export
-are_adjacent.datagraph <- function(graph, vertex1, vertex2) {
-  vertex2 %in% graph[[vertex1]]$to || vertex2 %in% graph[[vertex1]]$from
+are_adjacent.datagraph <- function(x, vertex1, vertex2) {
+  vertex2 %in% x[[vertex1]]$to || vertex2 %in% x[[vertex1]]$from
 }
 
 #' @export
-remove_vertex.datagraph <- function(graph, vertex, ...) {
-  from = graph[[vertex]]$from
-  to   = graph[[vertex]]$to
-  if (length(to))   remove_edges(graph, data.table(from = vertex, to = to))
-  if (length(from)) remove_edges(graph, data.table(from = from, to = vertex))
-  remove(list = vertex, envir = graph)
+remove_vertex.datagraph <- function(x, vertex, ...) {
+  from = x[[vertex]]$from
+  to   = x[[vertex]]$to
+  if (length(to))   remove_edges(x, data.table(from = vertex, to = to))
+  if (length(from)) remove_edges(x, data.table(from = from, to = vertex))
+  remove(list = vertex, envir = x)
 
-  return(invisible(graph))
+  return(invisible(x))
 }
 
 #' @export
-remove_vertices.datagraph <- function(graph, vertices, ...) {
-  lapply(vertices, remove_vertex.datagraph, graph = graph)
+remove_vertices.datagraph <- function(x, vertices, ...) {
+  lapply(vertices, remove_vertex.datagraph, x = x)
 
-  return(invisible(graph))
+  return(invisible(x))
 }
 
 #' @export
-remove_edge.datagraph <- function(graph, edge) {
-  vertex_from <- graph[[edge$from]]
-  vertex_to   <- graph[[edge$to]]
+remove_edge.datagraph <- function(x, edge) {
+  vertex_from <- x[[edge$from]]
+  vertex_to   <- x[[edge$to]]
   vertex_from$to <- setdiff(vertex_from$to, edge$to)
   vertex_to$from <- setdiff(vertex_to$from, edge$from)
 
-  return(invisible(graph))
+  return(invisible(x))
 }
 
 #' @export
-remove_edges.datagraph <- function(graph, edges) {
+remove_edges.datagraph <- function(x, edges) {
   if (nrow(edges))
     for (i in seq_len(nrow(edges))) {
-      remove_edge.datagraph(graph, edges[i, ])
+      remove_edge.datagraph(x, edges[i, ])
     }
 
-  return(invisible(graph))
+  return(invisible(x))
 }
 
 #' @export
@@ -307,9 +311,9 @@ neighbors_in.datagraph_vertex <- function(vertex) {
 }
 
 #' @export
-neighbors_in.datagraph <- function(graph, vertices, useNames = TRUE) {
-  vertices <- intersect(V(graph), vertices)
-  unlist(lapply(mget(vertices, envir = graph), neighbors_in.datagraph_vertex), use.names = useNames)
+neighbors_in.datagraph <- function(x, vertices, useNames = TRUE) {
+  vertices <- intersect(V(x), vertices)
+  unlist(lapply(mget(vertices, envir = x), neighbors_in.datagraph_vertex), use.names = useNames)
 }
 
 #' @export
@@ -318,33 +322,33 @@ neighbors_out.datagraph_vertex <- function(vertex) {
 }
 
 #' @export
-neighbors_out.datagraph <- function(graph, vertices, useNames = TRUE) {
-  vertices <- intersect(V(graph), vertices)
-  unlist(lapply(mget(vertices, envir = graph), neighbors_out.datagraph_vertex), use.names = useNames)
+neighbors_out.datagraph <- function(x, vertices, useNames = TRUE) {
+  vertices <- intersect(V(x), vertices)
+  unlist(lapply(mget(vertices, envir = x), neighbors_out.datagraph_vertex), use.names = useNames)
 }
 
 #' @export
-neighbors.datagraph <- function(graph, vertices, mode = c("in", "out", "all")) {
+neighbors.datagraph <- function(x, vertices, mode = c("in", "out", "all")) {
   mode <- match.arg(mode)
   switch (mode,
-    "in"  = neighbors_in(graph, vertices),
-    "out" = neighbors_out(graph, vertices),
+    "in"  = neighbors_in(x, vertices),
+    "out" = neighbors_out(x, vertices),
     "all" =
       union(
-        neighbors_in(graph, vertices),
-        neighbors_out(graph, vertices)
+        neighbors_in(x, vertices),
+        neighbors_out(x, vertices)
       )
   )
 }
 
 
 #' @export
-neighborhood.datagraph <- function(graph, vertices, order = 1000, mode = c("in", "out", "all")) {
+neighborhood.datagraph <- function(x, vertices, order = 1000, mode = c("in", "out", "all")) {
   newvisits <- vertices
   visited <- newvisits
   steps <- 0L
   while (steps < order && length(newvisits) > 0L) {
-    newvisits <- neighbors(graph = graph, vertices = newvisits, mode = mode)
+    newvisits <- neighbors(x, vertices = newvisits, mode = mode)
     newvisits <- setdiff(newvisits, visited)
     visited <- c(visited, newvisits)
     steps <- steps + 1L

@@ -4,7 +4,7 @@
 \alias{check}
 \title{Title}
 \usage{
-check(graph, ...)
+check(x, ...)
 }
 \arguments{
 \item{...}{}

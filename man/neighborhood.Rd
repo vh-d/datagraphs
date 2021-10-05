@@ -4,7 +4,7 @@
 \alias{neighborhood}
 \title{Title}
 \usage{
-neighborhood(graph, ...)
+neighborhood(x, ...)
 }
 \arguments{
 \item{...}{}
