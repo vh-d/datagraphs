@@ -149,11 +149,31 @@ as.data.table.datagraph <- function(x, what = c("all", "edges", "vertices")) {
 
 #' @importFrom igraph as.igraph
 #' @export
-as.igraph.datagraph <- function(x) {
-  x <- as.data.table.datagraph(x)
+as.igraph.datagraph <- function(x, add_missing = TRUE) {
+  x <- as.data.table.datagraph(x, what = "all")
+  edges <- unique(rbind(
+    x[, .(to   = unlist(to)),   by = .(from = id)][, .(from, to)],
+    x[, .(from = unlist(from)), by = .(to   = id)][, .(from, to)]
+  ))
+  vertices <- setnames(x[, !c("from", "to"), with = FALSE], "id", "name")
+  missing_vertices <- setdiff(edges[, c(from, to)], vertices$name)
+  if (length(missing_vertices)) {
+    if (isTRUE(add_missing)) {
+      vertices <- rbindlist(
+        list(
+          vertices,
+          data.table(name = missing_vertices)
+        ),
+        use.names = TRUE,
+        fill = TRUE
+      )
+    } else {
+      edges <- edges[!(from %in% missing_vertices | to %in% missing_vertices)]
+    }
+  }
   igraph::graph_from_data_frame(
-    d = x[, .(to = unlist(to)), by = .(from = id)],
-    vertices = setnames(x[, !c("from", "to"), with = FALSE], "id", "name"),
+    edges,
+    vertices = vertices,
     directed = TRUE
   )
 }
@@ -335,13 +355,13 @@ neighbors_out.datagraph <- function(x, vertices, useNames = TRUE) {
 #' @export
 neighbors.datagraph <- function(x, vertices, mode = "all") {
   switch (mode,
-    "in"  = neighbors_in(x, vertices),
-    "out" = neighbors_out(x, vertices),
-    "all" =
-      union(
-        neighbors_in(x, vertices),
-        neighbors_out(x, vertices)
-      )
+          "in"  = neighbors_in(x, vertices),
+          "out" = neighbors_out(x, vertices),
+          "all" =
+            union(
+              neighbors_in(x, vertices),
+              neighbors_out(x, vertices)
+            )
   )
 }
 
