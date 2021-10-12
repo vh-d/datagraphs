@@ -91,8 +91,8 @@ as.datagraph.data.table <- function(x, vertices = NULL) {
 
 
 #' @export
-as.list.datagraph <- function(x) {
-  as.list.environment(x)
+as.list.datagraph <- function(x, sorted = TRUE) {
+  as.list.environment(x, sorted = sorted)
 }
 
 #' @export
@@ -117,7 +117,7 @@ as.data.table.datagraph_vertex <- function(x, what = "all") {
       "vertices" = list(id = x[["id"]])
     )
   if (!is.null(x[["data"]]) & (what == "all" || what == "vertices")) {
-    obj <- c(obj, as.list.environment(x[["data"]]))
+    obj <- c(obj, as.list.environment(x[["data"]], sorted = FALSE))
   }
   return(as.data.table(obj))
 }
@@ -232,8 +232,8 @@ V.datagraph <- function(x, sorted = FALSE) {
   ls(x, sorted = sorted)
 }
 
-vertices.datagraph <- function(x) {
-  as.list.environment(x)
+vertices.datagraph <- function(x, sorted = TRUE) {
+  as.list.environment(x, sorted = sorted)
 }
 
 #' @export
@@ -241,8 +241,8 @@ E.datagraph <- function(x, sorted = FALSE) {
   ls(x[[".edges"]], sorted = sorted)
 }
 
-edges.datagraph <- function(x) {
-  as.list.environment(x[[".edges"]])
+edges.datagraph <- function(x, sorted = TRUE) {
+  as.list.environment(x[[".edges"]], sorted = sorted)
 }
 
 #' @export
@@ -465,7 +465,7 @@ print.datagraph_vertex <- function(x) {
 
   i <- tryCatch(i, error = function(e) NULL )
   if (!is.character(i)) {
-    ires <- sapply(as.list.environment(x), eval, expr = iexp)
+    ires <- sapply(as.list.environment(x, sorted = FALSE), eval, expr = iexp)
     ids <- names(which(ires))
   } else {
     ids <- i
@@ -480,7 +480,7 @@ neighbors_in.datagraph_vertex <- function(x, names = FALSE) {
   es <- x[["from"]]
   r <- vector("list", length = length(es))
   i <- 0L
-  for (j in as.list.environment(es)) {
+  for (j in as.list.environment(es, sorted = FALSE)) {
     i <- i + 1L
     r[[i]] <- .Primitive("[[")(j, "from")
   }
@@ -500,7 +500,7 @@ neighbors_out.datagraph_vertex <- function(x, names = FALSE) {
   es <- x[["to"]]
   r <- vector("list", length = length(es))
   i <- 0L
-  for (j in as.list.environment(es)) {
+  for (j in as.list.environment(es, sorted = FALSE)) {
     i <- i + 1L
     r[[i]] <- .Primitive("[[")(j, "to")
   }
@@ -547,7 +547,7 @@ neighborhood.datagraph <- function(x, vertices, order = 1000, mode = "all", name
 copy_of.datagraph_vertex <- function(x) {
   nv <- datagraph_vertex()
   nv[["id"]] <- x[["id"]]
-  if (!is.null(x[["data"]])) list2env(as.list.environment(x[["data"]]), nv[["data"]])
+  if (!is.null(x[["data"]])) list2env(as.list.environment(x[["data"]], sorted = FALSE), nv[["data"]])
   return(nv)
 }
 
@@ -555,11 +555,11 @@ copy_of.datagraph_vertex <- function(x) {
 copy_of.datagraph <- function(x) {
   ng <- datagraph()
   newel <- ng[[".edges"]]
-  for (i in as.list.environment(x)) {
+  for (i in as.list.environment(x, sorted = FALSE)) {
     nv <- copy_of.datagraph_vertex(i)
     assign(nv[["id"]], nv, envir = ng)
   }
-  for (j in as.list.environment(x[[".edges"]])) {
+  for (j in as.list.environment(x[[".edges"]], sorted = FALSE)) {
     fromid <- j[["from"]][["id"]]
     toid   <- j[["to"]][["id"]]
     add_edge.character(fromid, toid, graph = ng, data = j[["data"]])
@@ -608,10 +608,10 @@ union.datagraph <- function(...) {
 union_list_of_graphs <- function(x) {
   newgraph <- datagraph()
   for (i in x) {
-    coi <- copy_graph(i, as_list = TRUE)
-    list2env(coi, newgraph)
+    coi <- copy_of(i)
+    list2env(as.list.environment(coi, sorted = FALSE), newgraph)
+    list2env(as.list.environment(coi[[".edges"]], sorted = FALSE), newgraph[[".edges"]])
   }
-  reconnect_graph(newgraph)
   return(newgraph)
 }
 
@@ -657,11 +657,11 @@ collapse_vertices.datagraph <- function(x, vertices) {
   vid <- v[["id"]]
 
   for (i in vs[-1]) {
-    for (j in as.list.environment(i[["to"]])) {
+    for (j in as.list.environment(i[["to"]], sorted = FALSE)) {
       relink_edge(j, graph = x, from = v)
     }
 
-    for (j in as.list.environment(i[["from"]])) {
+    for (j in as.list.environment(i[["from"]], sorted = FALSE)) {
       relink_edge(j, graph = x, to = v)
     }
 
