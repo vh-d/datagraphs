@@ -50,12 +50,22 @@ as.datagraph.igraph <- function(x, ...) {
 
 
 #' @export
-as.datagraph.data.table <- function(x, vertices = NULL) {
+as.datagraph.data.table <- function(x, vertices = NULL, add_missing = FALSE) {
   obj <- datagraph()
 
   if (is.null(vertices)) {
     vertices <- x[, .(id = union(from, to))]
-    # vertices <- vertices[!is.na(vertices)]
+  } else {
+    if (is.null(vertices[["id"]])) stop("Table of vertices requires an id column")
+    reqids <- x[, union(from, to)]
+    misids <- setdiff(reqids, vertices[, id])
+    if (length(misids)) {
+      if (isTRUE(add_missing)) {
+        vertices <- rbindlist(list(vertices, data.table(id = misids)), fill = TRUE)
+      } else {
+        stop("Some vertices are missing: ", paste0(misids, collapse = ", "))
+      }
+    }
   }
 
   add_vertices.datagraph(obj, vertices = vertices)

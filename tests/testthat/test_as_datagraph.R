@@ -5,7 +5,19 @@ test_that("conversions between datagraph and data.table", {
   expect_true(check(dg1))
 
   expect_s3_class(dg1, "datagraph")
-  # TODO: contains 5 nodes, with the id 1:5
+  expect_equal(V(dg1, sorted = TRUE), as.character(1:5))
+})
+
+
+test_that("missing vertices are automatically added", {
+  nodes <- data.table(id = 1L:2L, label = letters[1L:2L])
+  edges <- data.table(from = c(1L, 2L, 3L, 4L), to = c(2L, 3L, 4L, 5L))
+  expect_error(dg1 <- as.datagraph(edges, vertices = nodes))
+  dg1 <- as.datagraph(edges, vertices = nodes, add_missing = TRUE)
+  expect_s3_class(dg1, "datagraph")
+  expect_true(check(dg1))
+  expect_length(V(dg1), 5L)
+  expect_equal(V(dg1, sorted = TRUE), as.character(1:5))
 })
 
 
@@ -17,12 +29,10 @@ test_that("conversions between datagraph and igraph", {
   expect_true(check(dg1))
 
   expect_s3_class(dg1, "datagraph")
-  # TODO: contains 5 nodes, with the id 1:5
+  expect_equal(V(dg1, sorted = TRUE), as.character(1:5))
 
   ig1b <- igraph::as.igraph(dg1)
   expect_s3_class(ig1b, "igraph")
   expect_true(igraph::identical_graphs(ig1b, ig1))
 })
-
-
 
