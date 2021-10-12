@@ -12,7 +12,13 @@ print.datagraph <- function(x, ...) {
 #' @export
 print.datagraph_vertex <- function(x) {
   cat("<datagraph vertex>", x[["id"]], "\n")
-  cat("edges from:", names(x[["from"]]), "\n")
-  cat("edges to:",   names(x[["to"]]), "\n")
-  cat("Attributes:", setdiff(ls(x[["data"]], sorted = FALSE), c("id", "from", "to")))
+  cat("Edges from:", names(x[["from"]]), "\n")
+  cat("Edges to:",   names(x[["to"]]), "\n")
+  cat("Data:", ls(x[["data"]], sorted = FALSE))
+}
+
+#' @export
+print.datagraph_edge <- function(x) {
+  cat("<datagraph_edge>", x[["id"]], "\n")
+  if (!is.null(x[["data"]])) cat("\tData:", ls(x[["data"]], sorted = FALSE))
 }
