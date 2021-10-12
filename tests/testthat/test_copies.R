@@ -1,6 +1,6 @@
 test_that("datagraphs can be copied", {
   dg1 <- datagraph()
-  dg2 <- copy_graph(dg1)
+  dg2 <- copy_of(dg1)
   # copy of empty graphs
   expect_true(all.equal(dg1, dg2))
 
@@ -8,16 +8,13 @@ test_that("datagraphs can be copied", {
   expect_type(all.equal(dg1, dg2), type = "character")
 
   add_edges(dg1, data.table(from = "A", to = "B"))
-  dg3 <- copy_graph(dg1)
+  dg3 <- copy_of(dg1)
 
   # copy of graphs with vertices and edges
   expect_true(all.equal(dg1, dg3))
-  dg3_list <- copy_graph(dg1, as_list = TRUE)
-  expect_type(dg3_list, "list")
-  expect_identical(length(dg3_list), length(dg3))
 
   # copies are independent
-  dg3[["A"]]$data <- 1
+  dg3[["A"]][["data"]]$a <- 1
   expect_type(all.equal(dg1, dg3), type = "character")
 
 })

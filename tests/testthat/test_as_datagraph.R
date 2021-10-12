@@ -1,7 +1,7 @@
 test_that("conversions between datagraph and data.table", {
   nodes <- data.table(id = 1L:5L, label = letters[1L:5L])
   edges <- data.table(from = c(1L, 2L, 3L, 4L), to = c(2L, 3L, 4L, 5L))
-  dg1 <- as.datagraph(edges, nodes)
+  dg1 <- as.datagraph(edges, vertices = nodes)
   expect_true(check(dg1))
 
   expect_s3_class(dg1, "datagraph")

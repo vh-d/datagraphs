@@ -16,8 +16,8 @@ dg_time1 <-
     dg <- datagraph()
     datagraphs::add_vertex(dg, vertex = list(id = as.character(1L)))
     for (i in 2:N) {
-      datagraphs::add_vertex(dg, vertex = list(id = as.character(i)))
-      datagraphs::add_edge(dg, list(from = as.character(i-1L), to = as.character(i)))
+      datagraphs::add_vertex(list(id = as.character(i)), graph = dg)
+      datagraphs::add_edge(list(from = as.character(i-1L), to = as.character(i)), graph = dg)
     }
   })
 

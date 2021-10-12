@@ -24,8 +24,6 @@ check <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 as.datagraph <- function(x, ...) {
   UseMethod("as.datagraph", x)
 }
@@ -34,8 +32,8 @@ as.datagraph <- function(x, ...) {
 #'
 #' @param ...
 #'
-vertex <- function(x, ...) {
-  UseMethod("vertex", x)
+as_vertex <- function(x, ...) {
+  UseMethod("as_vertex", x)
 }
 
 
@@ -46,8 +44,18 @@ vertex <- function(x, ...) {
 #'
 #' @return
 #' @export
+add_vertex <- function(x, ...) {
+  UseMethod("add_vertex", x)
+}
+
+
+#' Title
 #'
-#' @examples
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
 add_vertices <- function(x, ...) {
   UseMethod("add_vertices", x)
 }
@@ -59,9 +67,22 @@ V <- function(x, ...) {
 }
 
 #' @export
+vertices <- function(x, ...) {
+  UseMethod("vertices", x)
+}
+
+
+#' @export
 E <- function(x, ...) {
   UseMethod("E", x)
 }
+
+#' @export
+edges <- function(x, ...) {
+  UseMethod("edges", x)
+}
+
+
 #' Remove vertices from a x
 #'
 #' @param x
@@ -113,6 +134,20 @@ add_edge <- function(x, ...) {
 add_edges <- function(x, ...) {
   UseMethod("add_edges", x)
 }
+
+#' Title
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+remove_edge <- function(x, ...) {
+  UseMethod("remove_edge", x)
+}
+
 
 #' Title
 #'
@@ -218,4 +253,15 @@ collapse_vertices <- function(x, ...) {
   UseMethod("collapse_vertices", x)
 }
 
+
+#' Make a copy
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+copy_of <- function(x, ...) {
+  UseMethod("copy_of", x)
+}
 
