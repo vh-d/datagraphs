@@ -90,7 +90,36 @@ detect_cycles.datagraph <- function(graph) {
 #' @export
 subset.datagraph <- function(x, subset) {
   subset <- intersect(V(x), subset)
-  subgraph <- list2env(mget(subset, envir = x, mode = "environment"))
+  gl <- mget(subset, envir = x, mode = "environment")
+  subgraph <- list2env(gl)
+  el <- edgelist()
+  subgraph[[".edges"]] <- el
+
+  for (i in gl) {
+    id <- i[["id"]]
+    for (j in as.list.environment(i[["from"]])) {
+      eid <- j[["id"]]
+      fromid <- j[["from"]][["id"]]
+      if (fromid %in% subset) {
+        el[[eid]] <- j
+      } else {
+        remove_neighbor_in(i, j)
+        remove_neighbor_out(j, i)
+      }
+    }
+
+    for (k in as.list.environment(i[["to"]])) {
+      eid <- k[["id"]]
+      toid <- k[["to"]][["id"]]
+      if (toid %in% subset) {
+        el[[eid]] <- k
+      } else {
+        remove_neighbor_in(k, i)
+        remove_neighbor_out(i, k)
+      }
+    }
+
+  }
   class(subgraph) <- c("datagraph_subgraph", "datagraph")
 
   return(subgraph)

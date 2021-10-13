@@ -22,9 +22,11 @@ test_that("neighborhood", {
   expect_true(check(dg1))
 
   expect_setequal(neighborhood(dg1, vertices = "A", order = 0L,   mode = "in", names = TRUE), c("A"))
+  expect_setequal(neighborhood(dg1, vertices = "A", order = 0L,   mode = "out", names = TRUE), c("A"))
   expect_setequal(neighborhood(dg1, vertices = "A", order = 100L, mode = "in", names = TRUE), c("A"))
   expect_setequal(neighborhood(dg1, vertices = "A", order = 1L,   mode = "all", names = TRUE), c("A", "B"))
   expect_setequal(neighborhood(dg1, vertices = "A", order = 100L, mode = "all", names = TRUE), c("A", "B", "C"))
+  expect_setequal(neighborhood(dg1, vertices = "A", order = 100L, mode = "out", names = TRUE), c("A", "B", "C"))
 
   expect_setequal(neighborhood(dg1, vertices = "B", order = 0L,   mode = "in", names = TRUE),  c("B"))
   expect_setequal(neighborhood(dg1, vertices = "B", order = 100L, mode = "in", names = TRUE),  c("A", "B"))
