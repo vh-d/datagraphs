@@ -25,26 +25,49 @@ all.equal.datagraph_vertex <- function(current, target) {
 check.datagraph <- function(x) {
   el <- x[[".edges"]]
   if (!is.datagraph_edgelist(el)) return("Graph corrupted. Not an edgelist")
+  vids <- V(x)
   elids <- names(el)
+  elcheck <- rep(FALSE, length(el))
+  names(elcheck) <- elids
 
   l <- as.list(x, sorted = FALSE)
   for (i in l) {
-    if (!is.datagraph_vertex(i)) return(FALSE)
-    if (!is.datagraph_edgelist(i[["from"]])) return(FALSE)
-    if (!is.datagraph_edgelist(i[["to"]])) return(FALSE)
+    if (!is.datagraph_vertex(i)) return("Graph corrupted. Not a vertex.")
+    if (!is.datagraph_edgelist(i[["from"]])) return("Graph corrupted. Not an edgelist.")
+    if (!is.datagraph_edgelist(i[["to"]])) return("Graph corrupted. Not an edgelist.")
 
+    if (!all(names(i[["from"]]) %in% vids)) return("Graph corrupted. Edges outside of the graph.")
     for (j in as.list.environment(i[["from"]], sorted = FALSE)) {
       if (!is.datagraph_edge(j)) return("Graph corrupted. Not a datagraph_edge.")
       if (!identical(j[["to"]], i)) return("Graph corrupted.  Edge end point does not match.")
       if (!(j[["id"]] %in% elids)) return("Graph corrupted. Edge is missing in the edgelist.")
+      if (!(j[["from"]][["id"]] %in% vids)) return("Graph corrupted. Edge is missing in the edgelist.")
+      elcheck[j[["id"]]] <- TRUE
     }
 
+    if (!all(names(i[["to"]]) %in% vids)) return("Graph corrupted. Edges outside of the graph.")
     for (k in as.list.environment(i[["to"]], sorted = FALSE)) {
       if (!is.datagraph_edge(k)) return("Graph corrupted. Not a datagraph_edge.")
       if (!identical(k[["from"]], i)) return("Graph corrupted. Edge starting point does not match.")
       if (!(k[["id"]] %in% elids)) return("Graph corrupted. Edge is missing in the edgelist.")
+      elcheck[k[["id"]]] <- TRUE
     }
   }
+
+  for (eid in elids) {
+    i <- el[[eid]]
+    if (!is.datagraph_edge(i)) return("Graph corrupted. Not an edge.")
+    vfrom <- i[["from"]]
+    vto   <- i[["to"]]
+    if (!is.datagraph_vertex(vfrom)) return("Graph corrupted. Not a vertex.")
+    if (!is.datagraph_vertex(vto)) return("Graph corrupted. Not a vertex.")
+    fromid <- vfrom[["id"]]
+    toid   <- vto[["id"]]
+    eid2 <- sprintf("%s->%s", fromid, toid)
+    if (!identical(eid, eid2)) return('Graph corrupted. Edge name does not correspond to data')
+    if (!identical(eid, i[["id"]])) return('Graph corrupted. Edge name does not correspond to data')
+  }
+  if (!all(elcheck)) return("Graph corrupted. Extra edges in the edgelist.")
   return(TRUE)
 }
 

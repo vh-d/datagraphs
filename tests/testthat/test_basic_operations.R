@@ -72,4 +72,6 @@ test_that("Removing vertices with existing edges works", {
   expect_length(E(dg1), 2L)
 
   remove_vertex(dg1, "A")
+  expect_equal(neighbors_in(dg1[["B"]], names = TRUE), character())
+  expect_true(check(dg1))
 })

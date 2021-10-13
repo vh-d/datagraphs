@@ -236,8 +236,8 @@ remove_vertex.datagraph <- function(x, vertex, ...) {
 remove_vertex.character <- function(x, graph) {
   from = graph[[x]]$from
   to   = graph[[x]]$to
-  if (length(to))   remove_edges(from, graph = graph)
-  if (length(from)) remove_edges(to, graph = graph)
+  if (length(from)) remove_edges(from, graph = graph)
+  if (length(to)) remove_edges(to, graph = graph)
   remove(list = x, envir = graph)
 
   return(invisible(x))
