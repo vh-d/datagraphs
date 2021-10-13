@@ -229,13 +229,26 @@ add_edges.data.table <- function(x, graph) {
 
 #' @export
 remove_vertex.datagraph <- function(x, vertex, ...) {
-  from = x[[vertex]]$from
-  to   = x[[vertex]]$to
-  if (length(to))   remove_edges(x, data.table(from = vertex, to = to))
-  if (length(from)) remove_edges(x, data.table(from = from, to = vertex))
-  remove(list = vertex, envir = x)
+  remove_vertex(vertex, graph = x)
+  return(invisible(x))
+}
+
+remove_vertex.character <- function(x, graph) {
+  from = graph[[x]]$from
+  to   = graph[[x]]$to
+  if (length(to))   remove_edges(from, graph = graph)
+  if (length(from)) remove_edges(to, graph = graph)
+  remove(list = x, envir = graph)
 
   return(invisible(x))
+}
+
+remove_edges.datagraph_edgelist <- function(x, graph) {
+  el <- as.list.environment(x)
+  for (i in el) {
+    remove_edge_from_graph(i[["id"]], graph = graph, from = i[["from"]], to = i[["to"]])
+  }
+  return()
 }
 
 #' @export
@@ -248,10 +261,18 @@ remove_vertices.datagraph <- function(x, vertices, ...) {
 
 #' @export
 remove_edges.datagraph <- function(x, edges) {
-  if (nrow(edges))
-    for (i in seq_len(nrow(edges))) {
-      remove_edge.datagraph(x, edges[i, ])
+  remove_edges(edges, graph = x)
+  return(invisible(x))
+}
+
+#' @export
+remove_edges.data.table <- function(x, graph) {
+  if (nrow(x)) {
+    el <- split(x, by = c("from", "to"))
+    for (i in el) {
+      remove_edge.character(i$from, i$to, graph = graph)
     }
+  }
 
   return(invisible(x))
 }

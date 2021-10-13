@@ -53,3 +53,23 @@ test_that("Adding and removing edges works", {
   expect_false(are_adjacent(dg1, "A", "B"))
   expect_length(E(dg1), 0L)
 })
+
+
+test_that("Removing vertices with existing edges works", {
+  dg1 <- datagraph()
+  add_vertex(dg1, data.table(id = "A"))
+  add_vertex(dg1, data.table(id = "B"))
+  add_vertex(dg1, data.table(id = "C"))
+
+  add_edge(list(from = "A", to = "B"), graph = dg1)
+  expect_true(check(dg1))
+  expect_true(are_adjacent(dg1, "A", "B"))
+  expect_length(E(dg1), 1L)
+
+  add_edge("B", to = "C", graph = dg1)
+  expect_true(check(dg1))
+  expect_true(are_adjacent(dg1, "B", "C"))
+  expect_length(E(dg1), 2L)
+
+  remove_vertex(dg1, "A")
+})
