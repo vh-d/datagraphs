@@ -52,7 +52,7 @@ check.datagraph <- function(x) {
 #' @export
 `[.datagraph` <- function(x, i, j) {
   iexp <- if (missing(i)) quote(TRUE) else substitute(i)
-  jexp <- if (missing(j)) quote(data.table(id = id, from = list(from), to = list(to))) else substitute(j)
+  jexp <- if (missing(j)) quote(data.table(id = id, from = list(names(from)), to = list(names(to)))) else substitute(j)
 
   i <- tryCatch(i, error = function(e) NULL )
   if (!is.character(i)) {
