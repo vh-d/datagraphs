@@ -5,9 +5,20 @@ datagraph_edge <- function() {
 }
 
 #' @export
+is.datagraph_edge <- function(x) {
+  "datagraph_edge" %in% class(x)
+}
+
+
+#' @export
 edgelist <- function() {
   el <- structure(new.env(), class = "datagraph_edgelist")
   return(el)
+}
+
+#' @export
+is.datagraph_edgelist <- function(x) {
+  "datagraph_edgelist" %in% class(x)
 }
 
 
@@ -21,6 +32,11 @@ datagraph_vertex <- function() {
   return(v)
 }
 
+#' @export
+is.datagraph_vertex <- function(x) {
+  "datagraph_vertex" %in% class(x)
+}
+
 
 #' @export
 datagraph <- function() {
@@ -28,6 +44,11 @@ datagraph <- function() {
   graph[[".edges"]] <- edgelist()
   class(graph) <- c("datagraph")
   return(graph)
+}
+
+#' @export
+is.datagraph <- function(x) {
+  "datagraph" %in% class(x)
 }
 
 #' @export
@@ -39,8 +60,7 @@ as.datagraph.igraph <- function(x, ...) {
   setDT(vertices, key = "id")
   # TODO: check for duplicates
 
-  obj <- new.env()
-  class(obj) <- "datagraph"
+  obj <- datagraph()
 
   add_vertices.datagraph(obj, vertices = vertices)
   add_edges.datagraph(obj, edges = edges)

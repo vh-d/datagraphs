@@ -4,6 +4,7 @@ test_that("neighbors", {
   add_vertex(dg1, data.table(id = "A"))
   add_vertex(dg1, data.table(id = "B"))
   add_edges(dg1,  data.table(from = "A", to = "B"))
+  expect_true(check(dg1))
 
   expect_equal(neighbors(dg1, "A", "in", names = TRUE), character())
   expect_equal(neighbors(dg1, "A", "all", names = TRUE), "B")
@@ -18,6 +19,7 @@ test_that("neighborhood", {
   add_vertex(dg1, data.table(id = "C"))
   add_edges(dg1, data.table(from = "A", to = "B"))
   add_edges(dg1, data.table(from = "B", to = "C"))
+  expect_true(check(dg1))
 
   expect_setequal(neighborhood(dg1, vertices = "A", order = 0L,   mode = "in", names = TRUE), c("A"))
   expect_setequal(neighborhood(dg1, vertices = "A", order = 100L, mode = "in", names = TRUE), c("A"))

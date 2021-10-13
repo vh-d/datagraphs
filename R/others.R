@@ -16,12 +16,35 @@ all.equal.datagraph <- function(current, target) {
 }
 
 
+#' @export
 all.equal.datagraph_vertex <- function(current, target) {
   all.equal.environment(current, target)
 }
 
 #' @export
 check.datagraph <- function(x) {
+  el <- x[[".edges"]]
+  if (!is.datagraph_edgelist(el)) return("Graph corrupted. Not an edgelist")
+  elids <- names(el)
+
+  l <- as.list(x, sorted = FALSE)
+  for (i in l) {
+    if (!is.datagraph_vertex(i)) return(FALSE)
+    if (!is.datagraph_edgelist(i[["from"]])) return(FALSE)
+    if (!is.datagraph_edgelist(i[["to"]])) return(FALSE)
+
+    for (j in as.list.environment(i[["from"]], sorted = FALSE)) {
+      if (!is.datagraph_edge(j)) return("Graph corrupted. Not a datagraph_edge.")
+      if (!identical(j[["to"]], i)) return("Graph corrupted.  Edge end point does not match.")
+      if (!(j[["id"]] %in% elids)) return("Graph corrupted. Edge is missing in the edgelist.")
+    }
+
+    for (k in as.list.environment(i[["to"]], sorted = FALSE)) {
+      if (!is.datagraph_edge(k)) return("Graph corrupted. Not a datagraph_edge.")
+      if (!identical(k[["from"]], i)) return("Graph corrupted. Edge starting point does not match.")
+      if (!(k[["id"]] %in% elids)) return("Graph corrupted. Edge is missing in the edgelist.")
+    }
+  }
   return(TRUE)
 }
 
