@@ -7,15 +7,10 @@ add_vertex.datagraph <- function(x, vertex) {
 #' @export
 add_vertex.character <- function(x, graph, from = NULL, to = NULL, ...) {
   v <- datagraph_vertex()
-  list2env(
-    list(
-      id = x,
-      from = as_edgelist(from, graph = graph),
-      to   = as_edgelist(to,   graph = graph),
-      ...
-    ),
-    envir = v
-  )
+  .Primitive("[[<-")(v, "id", x)
+  .Primitive("[[<-")(v, "from", as_edgelist(from, graph = graph))
+  .Primitive("[[<-")(v, "to",   as_edgelist(to,   graph = graph))
+  list2env(list(...), v[["data"]])
   .Primitive("[[<-")(graph, x, v)
   return(invisible(v))
 }
@@ -160,7 +155,7 @@ add_edge.datagraph_vertex <- function(from, to, graph, data = NULL) {
   e[["id"]] <- sprintf("%s->%s", from[["id"]], to[["id"]])
   e[["from"]] <- from
   e[["to"]]   <- to
-  if (!is.null(data)) e[["data"]] <- data
+  if (!is.null(data)) list2env(data, e[["data"]])
   add_edge_to_graph(e, graph = graph, from = from, to = to)
   return(e)
 }
@@ -175,7 +170,7 @@ add_edge.character <- function(from, to, graph, data = NULL) {
   if (is.null(tv)) stop(to, " vertex does not exist in the graph")
   e[["from"]] <- fv
   e[["to"]]   <- tv
-  if (!is.null(data)) e[["data"]] <- data
+  if (!is.null(data)) list2env(data, e[["data"]])
   add_edge_to_graph(e, graph = graph, from = fv, to = tv)
   return(e)
 }
@@ -200,7 +195,7 @@ add_edge.list <- function(x, graph) {
   e[["id"]]   <- eid
   e[["from"]] <- from
   e[["to"]]   <- to
-  e[["data"]] <- x[["data"]]
+  if (!is.null(x[["data"]])) list2env(x[["data"]], e[["data"]])
   add_edge_to_graph(e, graph = graph, from = from, to = to)
   return(invisible(x))
 }
@@ -221,7 +216,7 @@ add_edges.data.table <- function(x, graph) {
   edges[, to   := as.character(to)]
 
   for (i in split(edges, by = c("from", "to"))) {
-    add_edge.character(i[["from"]], i[["to"]], graph = graph)
+    add_edge.character(i[["from"]], i[["to"]], graph = graph) # TODO: populate data env
   }
 
   return()

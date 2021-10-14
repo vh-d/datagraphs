@@ -1,6 +1,6 @@
 #' @export
-datagraph_edge <- function() {
-  e <- structure(new.env(), class = "datagraph_edge")
+datagraph_edge <- function(parent = emptyenv()) {
+  e <- structure(new.env(parent = parent), class = "datagraph_edge")
   return(e)
 }
 
@@ -11,8 +11,8 @@ is.datagraph_edge <- function(x) {
 
 
 #' @export
-edgelist <- function() {
-  el <- structure(new.env(), class = "datagraph_edgelist")
+edgelist <- function(parent = emptyenv()) {
+  el <- structure(new.env(parent = parent), class = "datagraph_edgelist")
   return(el)
 }
 
@@ -23,11 +23,11 @@ is.datagraph_edgelist <- function(x) {
 
 
 #' @export
-datagraph_vertex <- function() {
-  v <- new.env()
-  v[["from"]] <- edgelist()
-  v[["to"]]   <- edgelist()
-  v[["data"]] <- new.env()
+datagraph_vertex <- function(parent = parent.frame()) {
+  v <- new.env(parent = parent)
+  v[["from"]] <- edgelist(parent = v)
+  v[["to"]]   <- edgelist(parent = v)
+  v[["data"]] <- new.env(parent = v)
   class(v) <- c("datagraph_vertex")
   return(v)
 }
@@ -40,8 +40,8 @@ is.datagraph_vertex <- function(x) {
 
 #' @export
 datagraph <- function() {
-  graph <- new.env()
-  graph[[".edges"]] <- edgelist()
+  graph <- new.env(parent = parent.frame())
+  graph[[".edges"]] <- edgelist(parent = graph)
   class(graph) <- c("datagraph")
   return(graph)
 }

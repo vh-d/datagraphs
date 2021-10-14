@@ -71,6 +71,9 @@ check.datagraph <- function(x) {
   return(TRUE)
 }
 
+eval_in_data <- function(x, expr, ...) {
+  tryCatch(eval(expr = expr, envir = x[["data"]], ...), error = function(e) list())
+}
 
 #' @export
 `[.datagraph` <- function(x, i, j) {
@@ -79,13 +82,14 @@ check.datagraph <- function(x) {
 
   i <- tryCatch(i, error = function(e) NULL )
   if (!is.character(i)) {
-    ires <- sapply(as.list.environment(x, sorted = FALSE), eval, expr = iexp)
+    ires <- sapply(as.list.environment(x, sorted = FALSE), eval_in_data, expr = iexp)
     ids <- names(which(ires))
   } else {
     ids <- i
   }
 
-  rbindlist(lapply(mget(x = ids, envir = x), eval, expr = jexp))
+  res <- lapply(mget(x = ids, envir = x), eval_in_data, expr = jexp)
+  if (is.list(res[[1]])) rbindlist(res) else unlist(res, recursive = FALSE)
 }
 
 
