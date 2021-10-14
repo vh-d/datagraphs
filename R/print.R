@@ -10,7 +10,7 @@ print.datagraph <- function(x, ...) {
 }
 
 #' @export
-print.datagraph_vertex <- function(x) {
+print.datagraph_vertex <- function(x, ...) {
   cat("<datagraph vertex>", x[["id"]], "\n")
   cat("Edges from:", names(x[["from"]]), "\n")
   cat("Edges to:",   names(x[["to"]]), "\n")
@@ -18,7 +18,13 @@ print.datagraph_vertex <- function(x) {
 }
 
 #' @export
-print.datagraph_edge <- function(x) {
+print.datagraph_edge <- function(x, ...) {
   cat("<datagraph_edge>", x[["id"]], "\n")
   if (!is.null(x[["data"]])) cat("\tData:", ls(x[["data"]], sorted = FALSE))
+}
+
+#' @export
+print.datagraph_edgelist <- function(x, ...) {
+  cat("<datagraph_edgelist>")
+  cat("Edges:", paste0(head(names(x)), collapse = ", "))
 }
