@@ -305,6 +305,7 @@ relink_edge <- function(e, graph, from = e[["from"]], to = e[["to"]]) {
 
   e[["from"]] <- newfrom
   e[["to"]] <- newto
+  e[["id"]] <- newid
 
   remove(list = oldid, envir = graph[[".edges"]])
   graph[[".edges"]][[newid]] <- e
