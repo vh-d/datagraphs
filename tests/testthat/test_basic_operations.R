@@ -8,7 +8,7 @@ test_that("Adding and removing vertices works", {
 
   add_vertex(dg1, data.table(id = "A"))
   expect_true(contains_vertex(dg1, "A"))
-  expect_identical(dg1[["A"]]$id, "A")
+  expect_identical(dg1[["A"]][["id"]], "A")
 
   remove_vertex(dg1, "A")
   expect_false(contains_vertex(dg1, "A"))

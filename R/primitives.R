@@ -8,8 +8,8 @@ add_vertex.datagraph <- function(x, vertex) {
 add_vertex.character <- function(x, graph, from = NULL, to = NULL, ...) {
   v <- datagraph_vertex()
   .Primitive("[[<-")(v, "id", x)
-  .Primitive("[[<-")(v, "from", as_edgelist(from, graph = graph))
-  .Primitive("[[<-")(v, "to",   as_edgelist(to,   graph = graph))
+  # .Primitive("[[<-")(v, "from", as_edgelist(from, graph = graph)) TODO: implement this
+  # .Primitive("[[<-")(v, "to",   as_edgelist(to,   graph = graph))
   list2env(list(...), v[["data"]])
   .Primitive("[[<-")(graph, x, v)
   return(invisible(v))
@@ -229,8 +229,8 @@ remove_vertex.datagraph <- function(x, vertex, ...) {
 }
 
 remove_vertex.character <- function(x, graph) {
-  from = graph[[x]]$from
-  to   = graph[[x]]$to
+  from = graph[[x]][["from"]]
+  to   = graph[[x]][["to"]]
   if (length(from)) remove_edges(from, graph = graph)
   if (length(to)) remove_edges(to, graph = graph)
   remove(list = x, envir = graph)
@@ -265,7 +265,7 @@ remove_edges.data.table <- function(x, graph) {
   if (nrow(x)) {
     el <- split(x, by = c("from", "to"))
     for (i in el) {
-      remove_edge.character(i$from, i$to, graph = graph)
+      remove_edge.character(i[["from"]], i[["to"]], graph = graph)
     }
   }
 
@@ -317,3 +317,30 @@ relink_edge <- function(e, graph, from = e[["from"]], to = e[["to"]]) {
 
   return(invisible(e))
 }
+
+#' @export
+`[.datagraph_vertex` <- function(x, i) {
+  de <- x[["data"]]
+  .Primitive("[[")(de, i)
+}
+
+#' @export
+`[<-.datagraph_vertex` <- function(x, i, value) {
+  de <- x[["data"]]
+  .Primitive("[[<-")(de, i, value)
+  return(x)
+}
+
+#' @export
+`$.datagraph_vertex` <- function(x, i) {
+  de <- x[["data"]]
+  .Primitive("$")(de, i)
+}
+
+#' @export
+`$<-.datagraph_vertex` <- function(x, i, value) {
+  de <- x[["data"]]
+  .Primitive("$<-")(de, i, value)
+  return(x)
+}
+
