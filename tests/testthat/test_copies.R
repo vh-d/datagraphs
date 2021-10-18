@@ -21,6 +21,8 @@ test_that("datagraphs can be copied", {
   # copies are independent
   dg3[["A"]]$a <- 1
   expect_type(all.equal(dg1, dg3), type = "character")
-  expect_true(check(dg3))
-
+  dg1[["A"]]$a <- 2
+  expect_type(all.equal(dg1, dg3), type = "character")
+  dg1[["A"]]$a <- 1
+  expect_true(all.equal(dg1, dg3))
 })

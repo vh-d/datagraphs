@@ -17,8 +17,20 @@ all.equal.datagraph <- function(current, target) {
 
 
 #' @export
-all.equal.datagraph_vertex <- function(current, target) {
-  all.equal.environment(current, target)
+all.equal.datagraph_vertex <- function(current, target, ...) {
+  if (!identical(current[["id"]], target[["id"]])) return("Different ids")
+  if (length(setdiff(neighbors_in(current),  neighbors_in(target)))) return("Different set of incoming links")
+  if (length(setdiff(neighbors_out(current), neighbors_out(target)))) return("Different set of outgoing links")
+  if (!(setequal(names(current[["data"]]), names(target[["data"]])))) return("Different set of attributes")
+  if (length(current[["data"]])) {
+    return(all.equal(current[["data"]], target[["data"]]))
+  }
+  return(TRUE)
+}
+
+#' @export
+all.equal.datagraph_edgelist <- function(current, target, ...) {
+  all.equal.environment(current, target, all.names = TRUE, evaluate = FALSE)
 }
 
 #' @export
