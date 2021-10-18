@@ -14,7 +14,7 @@ test_that("Adding and removing vertices works", {
   expect_false(contains_vertex(dg1, "A"))
 
   add_vertex(dg1, data.table(id = "A"))
-  add_vertex(dg1, data.table(id = "B"))
+  add_vertex("B", graph = dg1)
   expect_true(check(dg1))
   expect_length(V(dg1), 2L)
   expect_true(contains_vertex(dg1, "A"))

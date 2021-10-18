@@ -8,10 +8,10 @@ add_vertex.datagraph <- function(x, vertex) {
 add_vertex.character <- function(x, graph, from = NULL, to = NULL, ...) {
   v <- datagraph_vertex()
   .Primitive("[[<-")(v, "id", x)
-  # .Primitive("[[<-")(v, "from", as_edgelist(from, graph = graph)) TODO: implement this
-  # .Primitive("[[<-")(v, "to",   as_edgelist(to,   graph = graph))
   list2env(list(...), v[["data"]])
   .Primitive("[[<-")(graph, x, v)
+  for (i in from) add_edge(i, to = x, graph = graph)
+  for (j in to) add_edge(x, to = j, graph = graph)
   return(invisible(v))
 }
 
