@@ -58,7 +58,8 @@ V.datagraph <- function(x, sorted = FALSE) {
   ls(x, sorted = sorted)
 }
 
-vertices.datagraph <- function(x, sorted = TRUE) {
+#' @export
+vertices.datagraph <- function(x, sorted = FALSE) {
   as.list.environment(x, sorted = sorted)
 }
 
@@ -67,7 +68,8 @@ E.datagraph <- function(x, sorted = FALSE) {
   ls(x[[".edges"]], sorted = sorted)
 }
 
-edges.datagraph <- function(x, sorted = TRUE) {
+#' @export
+edges.datagraph <- function(x, sorted = FALSE) {
   as.list.environment(x[[".edges"]], sorted = sorted)
 }
 
@@ -228,6 +230,7 @@ remove_vertex.datagraph <- function(x, vertex, ...) {
   return(invisible(x))
 }
 
+#' @export
 remove_vertex.character <- function(x, graph) {
   from = graph[[x]][["from"]]
   to   = graph[[x]][["to"]]
@@ -238,6 +241,7 @@ remove_vertex.character <- function(x, graph) {
   return(invisible(x))
 }
 
+#' @export
 remove_edges.datagraph_edgelist <- function(x, graph) {
   el <- as.list.environment(x)
   for (i in el) {

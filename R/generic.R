@@ -28,14 +28,6 @@ as.datagraph <- function(x, ...) {
   UseMethod("as.datagraph", x)
 }
 
-#' @param x
-#'
-#' @param ...
-#'
-as_vertex <- function(x, ...) {
-  UseMethod("as_vertex", x)
-}
-
 
 #' Title
 #'
@@ -115,8 +107,6 @@ remove_vertices <- function(x, vertices, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 add_edge <- function(x, ...) {
   UseMethod("add_edge", x)
 }
@@ -129,8 +119,6 @@ add_edge <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 add_edges <- function(x, ...) {
   UseMethod("add_edges", x)
 }
@@ -142,8 +130,6 @@ add_edges <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 remove_edge <- function(x, ...) {
   UseMethod("remove_edge", x)
 }
@@ -156,8 +142,6 @@ remove_edge <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 remove_edges <- function(x, ...) {
   UseMethod("remove_edges", x)
 }
@@ -169,8 +153,6 @@ remove_edges <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 are_adjacent <- function(x, ...) {
   UseMethod("are_adjacent", x)
 }
@@ -183,8 +165,6 @@ are_adjacent <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 neighbors <- function(x, ...) {
   UseMethod("neighbors", x)
 }
@@ -196,8 +176,6 @@ neighbors <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 neighbors_in <- function(x, ...) {
   UseMethod("neighbors_in", x)
 }
@@ -210,8 +188,6 @@ neighbors_in <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 neighbors_out <- function(x, ...) {
   UseMethod("neighbors_out", x)
 }
@@ -234,8 +210,6 @@ neighborhood <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 detect_cycles <- function(x, ...) {
   UseMethod("detect_cycles", x)
 }
@@ -247,8 +221,6 @@ detect_cycles <- function(x, ...) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 collapse_vertices <- function(x, ...) {
   UseMethod("collapse_vertices", x)
 }
