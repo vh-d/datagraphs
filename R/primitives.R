@@ -337,15 +337,7 @@ relink_edge <- function(e, graph, from = e[["from"]], to = e[["to"]]) {
 }
 
 #' @export
-`$.datagraph_vertex` <- function(x, i) {
-  de <- x[["data"]]
-  .Primitive("$")(de, i)
-}
+`$.datagraph_vertex` <- `[.datagraph_vertex`
 
 #' @export
-`$<-.datagraph_vertex` <- function(x, i, value) {
-  de <- x[["data"]]
-  .Primitive("$<-")(de, i, value)
-  return(x)
-}
-
+`$<-.datagraph_vertex` <- `[<-.datagraph_vertex`

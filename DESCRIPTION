@@ -1,11 +1,10 @@
 Package: datagraphs
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.2.1
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Graph structures with pass-by-reference semantics.
+Version: 0.2.2
+Author: Vaclav Hausenblas
+Maintainer: Vaclav Hausenblas <vaclav.hausenblas@somewhere.net>
+Description: Graph structures with pass-by-reference semantics.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
