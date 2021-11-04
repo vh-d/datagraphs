@@ -94,10 +94,13 @@ as.datagraph.data.table <- function(x, vertices = NULL, add_missing = FALSE) {
   return(obj)
 }
 
-
+#' @export
+as.list.datagraph <- function(x, sorted = FALSE) {
+  as.list.environment(x, sorted = sorted)
+}
 
 #' @export
-as.list.datagraph <- function(x, sorted = TRUE) {
+as.list.datagraph_edgelist <- function(x, sorted = FALSE) {
   as.list.environment(x, sorted = sorted)
 }
 

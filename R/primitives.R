@@ -172,7 +172,7 @@ add_edge.character <- function(from, to, graph, data = NULL) {
   if (is.null(tv)) stop(to, " vertex does not exist in the graph")
   e[["from"]] <- fv
   e[["to"]]   <- tv
-  if (!is.null(data)) list2env(data, e[["data"]])
+  if (!is.null(data)) e[["data"]] <- list2env(as.list(data))
   add_edge_to_graph(e, graph = graph, from = fv, to = tv)
   return(e)
 }
@@ -218,7 +218,7 @@ add_edges.data.table <- function(x, graph) {
   edges[, to   := as.character(to)]
 
   for (i in split(edges, by = c("from", "to"))) {
-    add_edge.character(i[["from"]], i[["to"]], graph = graph) # TODO: populate data env
+    add_edge.character(i[["from"]], i[["to"]], data = i[, !c("from", "to")], graph = graph)
   }
 
   return()
@@ -341,3 +341,22 @@ relink_edge <- function(e, graph, from = e[["from"]], to = e[["to"]]) {
 
 #' @export
 `$<-.datagraph_vertex` <- `[<-.datagraph_vertex`
+
+#' @export
+`[.datagraph_edge` <- function(x, i) {
+  de <- x[["data"]]
+  .Primitive("[[")(de, i)
+}
+
+#' @export
+`[<-.datagraph_edge` <- function(x, i, value) {
+  de <- x[["data"]]
+  .Primitive("[[<-")(de, i, value)
+  return(x)
+}
+
+#' @export
+`$.datagraph_edge` <- `[.datagraph_edge`
+
+#' @export
+`$<-.datagraph_edge` <- `[<-.datagraph_edge`
