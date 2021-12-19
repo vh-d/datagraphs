@@ -7,7 +7,7 @@
 remove_vertices(x, vertices, ...)
 }
 \arguments{
-\item{...}{}
+\item{...}{passed to individual methods}
 }
 \value{
 

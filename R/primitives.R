@@ -1,9 +1,15 @@
+#' @param vertex id of a vertex
+#' @rdname add_vertices
 #' @export
 add_vertex.datagraph <- function(x, vertex) {
   add_vertex(vertex, graph = x)
   return(invisible(x))
 }
 
+#' @param graph datagraph object
+#' @param from vector of vertices to connect from
+#' @param to vector of vertices to connect from
+#' @rdname add_vertices
 #' @export
 add_vertex.character <- function(x, graph, from = NULL, to = NULL, ...) {
   v <- datagraph_vertex()
@@ -16,6 +22,7 @@ add_vertex.character <- function(x, graph, from = NULL, to = NULL, ...) {
 }
 
 
+#' @rdname add_vertices
 #' @export
 add_vertex.data.table <- function(x, graph) {
   v <- datagraph_vertex()
@@ -26,6 +33,7 @@ add_vertex.data.table <- function(x, graph) {
   return(invisible(v))
 }
 
+#' @rdname add_vertices
 #' @export
 add_vertex.list <- function(x, graph) {
   v <- datagraph_vertex()
@@ -36,12 +44,15 @@ add_vertex.list <- function(x, graph) {
   return(invisible(v))
 }
 
+#' @param vertices vector of new ids
+#' @rdname add_vertices
 #' @export
 add_vertices.datagraph <- function(x, vertices) {
   add_vertices(vertices, graph = x)
   return(invisible(x))
 }
 
+#' @rdname add_vertices
 #' @export
 add_vertices.data.table <- function(x, graph) {
   vertices <- copy(x)
@@ -53,21 +64,25 @@ add_vertices.data.table <- function(x, graph) {
 
 
 
+#' @rdname vertices
 #' @export
 V.datagraph <- function(x, sorted = FALSE) {
   ls(x, sorted = sorted)
 }
 
+#' @rdname vertices
 #' @export
 vertices.datagraph <- function(x, sorted = FALSE) {
   as.list.environment(x, sorted = sorted)
 }
 
+#' @rdname edges
 #' @export
 E.datagraph <- function(x, sorted = FALSE) {
   ls(x[[".edges"]], sorted = sorted)
 }
 
+#' @rdname edges
 #' @export
 edges.datagraph <- function(x, sorted = FALSE) {
   as.list.environment(x[[".edges"]], sorted = sorted)
@@ -143,6 +158,8 @@ remove_edge_from_graph <- function(edgeid, graph, from, to) {
   return()
 }
 
+#' @param graph a datagraph object
+#' @rdname add_edges
 #' @export
 add_edge.datagraph_edge <- function(x, graph) {
   v1 <- x[["from"]]
@@ -151,6 +168,11 @@ add_edge.datagraph_edge <- function(x, graph) {
   return(invisible(x))
 }
 
+#' @param from character; id of the start node
+#' @param to character; id of the end node
+#' @param data list of data attributes
+#'
+#' @rdname add_edges
 #' @export
 add_edge.datagraph_vertex <- function(from, to, graph, data = NULL) {
   e <- datagraph_edge()
@@ -162,6 +184,7 @@ add_edge.datagraph_vertex <- function(from, to, graph, data = NULL) {
   return(e)
 }
 
+#' @rdname add_edges
 #' @export
 add_edge.character <- function(from, to, graph, data = NULL) {
   e <- datagraph_edge()
@@ -186,6 +209,7 @@ remove_edge.character <- function(from, to, graph) {
   return()
 }
 
+#' @rdname add_edges
 #' @export
 add_edge.list <- function(x, graph) {
   e <- datagraph_edge()
@@ -203,12 +227,14 @@ add_edge.list <- function(x, graph) {
 }
 
 
+#' @rdname add_edges
 #' @export
 add_edges.datagraph <- function(x, edges) {
   add_edges(edges, graph = x)
   return(invisible(x))
 }
 
+#' @rdname add_edges
 #' @export
 add_edges.data.table <- function(x, graph) {
   edges <- unique(x, by = c("from", "to"))

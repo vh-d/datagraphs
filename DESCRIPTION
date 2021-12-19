@@ -1,7 +1,7 @@
 Package: datagraphs
 Type: Package
 Title: Graph structures with pass-by-reference semantics.
-Version: 0.2.3
+Version: 0.2.4
 Author: Vaclav Hausenblas
 Maintainer: Vaclav Hausenblas <vaclav.hausenblas@somewhere.net>
 Description: Graph structures with pass-by-reference semantics.

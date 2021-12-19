@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic.R
 \name{detect_cycles}
 \alias{detect_cycles}
-\title{Title}
+\title{Test that graph contains cycles}
 \usage{
 detect_cycles(x, ...)
 }
@@ -13,5 +13,5 @@ detect_cycles(x, ...)
 
 }
 \description{
-Title
+Test that graph contains cycles
 }

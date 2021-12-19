@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic.R
 \name{are_adjacent}
 \alias{are_adjacent}
-\title{Title}
+\title{Test if two vertices are adjacent (direct neighbors)}
 \usage{
 are_adjacent(x, ...)
 }
@@ -13,5 +13,5 @@ are_adjacent(x, ...)
 
 }
 \description{
-Title
+Test if two vertices are adjacent (direct neighbors)
 }

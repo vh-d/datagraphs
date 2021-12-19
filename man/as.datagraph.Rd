@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic.R
 \name{as.datagraph}
 \alias{as.datagraph}
-\title{Convert to datax}
+\title{Constructors of datagraph objects}
 \usage{
 as.datagraph(x, ...)
 }
@@ -13,5 +13,5 @@ as.datagraph(x, ...)
 
 }
 \description{
-Convert to datax
+Constructors of datagraph objects
 }

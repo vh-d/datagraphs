@@ -3,7 +3,7 @@
   sapply(y, `%chin%`, x = x, USE.NAMES = FALSE)
 }
 
-#' Title
+#' Check/test a datagraph object's consistency
 #'
 #' @param x
 #' @param ...
@@ -17,7 +17,7 @@ check <- function(x, ...) {
 }
 
 
-#' Convert to datax
+#' Constructors of datagraph objects
 #'
 #' @param x
 #' @param ...
@@ -29,46 +29,55 @@ as.datagraph <- function(x, ...) {
 }
 
 
-#' Title
+#' @title Add vertices
 #'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname add_vertices
 #' @export
 add_vertex <- function(x, ...) {
   UseMethod("add_vertex", x)
 }
 
 
-#' Title
-#'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname add_vertices
 #' @export
 add_vertices <- function(x, ...) {
   UseMethod("add_vertices", x)
 }
 
 
+#' @rdname vertices
 #' @export
 V <- function(x, ...) {
   UseMethod("V", x)
 }
 
+#' List all vertices in a graph
+#' @param x see S3 methods
+#'
+#' @param ...
+#' @rdname vertices
 #' @export
 vertices <- function(x, ...) {
   UseMethod("vertices", x)
 }
 
 
+#' @rdname edges
 #' @export
 E <- function(x, ...) {
   UseMethod("E", x)
 }
 
+#' List all edges in a graph
+#' @rdname edges
 #' @export
 edges <- function(x, ...) {
   UseMethod("edges", x)
@@ -92,7 +101,7 @@ remove_vertex <- function(x, vertex, ...) {
 #'
 #' @param x
 #' @param vertices
-#' @param ...
+#' @param ... passed to individual methods
 #'
 #' @return
 #' @export
@@ -100,11 +109,7 @@ remove_vertices <- function(x, vertices, ...) {
   UseMethod("remove_vertices", x)
 }
 
-#' Title
-#'
-#' @param x
-#' @param ...
-#'
+#' @rdname add_edges
 #' @return
 #' @export
 add_edge <- function(x, ...) {
@@ -112,10 +117,10 @@ add_edge <- function(x, ...) {
 }
 
 
-#' Title
+#' Add edges (between vertices) to a graph
 #'
-#' @param x
-#' @param ...
+#' @param x see S3 methods
+#' @param ... passed to individual methods
 #'
 #' @return
 #' @export
@@ -123,19 +128,18 @@ add_edges <- function(x, ...) {
   UseMethod("add_edges", x)
 }
 
-#' Title
-#'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname remove_edges
 #' @export
 remove_edge <- function(x, ...) {
   UseMethod("remove_edge", x)
 }
 
 
-#' Title
+#' Remove edges between vertices
 #'
 #' @param x
 #' @param ...
@@ -146,7 +150,7 @@ remove_edges <- function(x, ...) {
   UseMethod("remove_edges", x)
 }
 
-#' Title
+#' Test if two vertices are adjacent (direct neighbors)
 #'
 #' @param x
 #' @param ...
@@ -158,52 +162,56 @@ are_adjacent <- function(x, ...) {
 }
 
 
-#' Title
+#' @description neighbors - adjacent vertices
 #'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname neighborhood
 #' @export
 neighbors <- function(x, ...) {
   UseMethod("neighbors", x)
 }
 
-#' Title
+#' @description neighbors_in - adjacent vertices following incoming edges
 #'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname neighborhood
 #' @export
 neighbors_in <- function(x, ...) {
   UseMethod("neighbors_in", x)
 }
 
 
-#' Title
+#' @description neighbors_out - adjacent vertices following outgoing edges
 #'
 #' @param x
 #' @param ...
 #'
 #' @return
+#' @rdname neighborhood
 #' @export
 neighbors_out <- function(x, ...) {
   UseMethod("neighbors_out", x)
 }
 
-#' Title
+#' @title Adjacent vertices
 #'
-#' @param x
+#' @param x see individual S3 methods
 #' @param ...
 #'
 #' @return
+#' @rdname neighborhood
 #' @export
 neighborhood <- function(x, ...) {
   UseMethod("neighborhood", x)
 }
 
-#' Title
+#' Test that graph contains cycles
 #'
 #' @param x
 #' @param ...
@@ -214,7 +222,7 @@ detect_cycles <- function(x, ...) {
   UseMethod("detect_cycles", x)
 }
 
-#' Title
+#' Collapse vertices
 #'
 #' @param x
 #' @param ...
@@ -235,5 +243,17 @@ collapse_vertices <- function(x, ...) {
 #' @export
 copy_of <- function(x, ...) {
   UseMethod("copy_of", x)
+}
+
+
+#' Run a function for each member.
+#'
+#' @param x
+#' @param ...
+#'
+#' @return
+#' @export
+foreach <- function(x, f, ...) {
+  UseMethod("foreach", x)
 }
 

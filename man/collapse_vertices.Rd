@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic.R
 \name{collapse_vertices}
 \alias{collapse_vertices}
-\title{Title}
+\title{Collapse vertices}
 \usage{
 collapse_vertices(x, ...)
 }
@@ -13,5 +13,5 @@ collapse_vertices(x, ...)
 
 }
 \description{
-Title
+Collapse vertices
 }

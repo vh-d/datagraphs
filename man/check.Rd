@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic.R
 \name{check}
 \alias{check}
-\title{Title}
+\title{Check/test a datagraph object's consistency}
 \usage{
 check(x, ...)
 }
@@ -13,5 +13,5 @@ check(x, ...)
 
 }
 \description{
-Title
+Check/test a datagraph object's consistency
 }
