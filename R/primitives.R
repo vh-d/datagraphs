@@ -253,13 +253,18 @@ add_edges.data.table <- function(x, graph) {
   return()
 }
 
+#' @param vertex vertex id
 #' @export
+#' @rdname remove_vertices
 remove_vertex.datagraph <- function(x, vertex, ...) {
   remove_vertex(vertex, graph = x)
   return(invisible(x))
 }
 
+
+#' @param graph datagraph object
 #' @export
+#' @rdname remove_vertices
 remove_vertex.character <- function(x, graph) {
   from = graph[[x]][["from"]]
   to   = graph[[x]][["to"]]
@@ -279,7 +284,9 @@ remove_edges.datagraph_edgelist <- function(x, graph) {
   return()
 }
 
+#' @param vertices vertex ids
 #' @export
+#' @rdname remove_vertices
 remove_vertices.datagraph <- function(x, vertices, ...) {
   lapply(vertices, remove_vertex.datagraph, x = x)
 
