@@ -1,11 +1,11 @@
 Package: datagraphs
 Type: Package
-Title: Graph structures with pass-by-reference semantics.
-Version: 0.2.4
+Title: Graph data structures with pass-by-reference semantics
+Version: 0.2.5
 Author: Vaclav Hausenblas
 Maintainer: Vaclav Hausenblas <vaclav.hausenblas@somewhere.net>
-Description: Graph structures with pass-by-reference semantics.
-License: What license is it under?
+Description: The package provides native graph data structures classes with pass-by-reference semantics. Focuses on simplicity and easiness to enhancement.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
@@ -15,4 +15,5 @@ Config/testthat/edition: 3
 Depends: 
     data.table
 Imports: 
-    igraph
+    igraph,
+    utils
