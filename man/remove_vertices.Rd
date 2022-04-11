@@ -7,10 +7,11 @@
 remove_vertices(x, vertices, ...)
 }
 \arguments{
-\item{...}{passed to individual methods}
-}
-\value{
+\item{x}{see the S3 methods}
 
+\item{vertices}{a vector of vertices' ids}
+
+\item{...}{passed to individual methods}
 }
 \description{
 Remove vertices from a graph

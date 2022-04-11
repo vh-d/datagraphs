@@ -23,6 +23,7 @@ print.datagraph_edge <- function(x, ...) {
   if (!is.null(x[["data"]])) cat("\tData:", ls(x[["data"]], sorted = FALSE))
 }
 
+#' @importFrom utils head
 #' @export
 print.datagraph_edgelist <- function(x, ...) {
   cat("<datagraph_edgelist>")

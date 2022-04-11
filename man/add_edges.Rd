@@ -9,7 +9,7 @@
 \alias{add_edge.list}
 \alias{add_edges.datagraph}
 \alias{add_edges.data.table}
-\title{Add edges (between vertices) to a graph}
+\title{Add an edge}
 \usage{
 add_edge(x, ...)
 
@@ -39,12 +39,11 @@ add_edges(x, ...)
 \item{to}{character; id of the end node}
 
 \item{data}{list of data attributes}
-}
-\value{
 
-
-
+\item{edges}{passed to S3 methods of add_edges}
 }
 \description{
+Add an edge
+
 Add edges (between vertices) to a graph
 }

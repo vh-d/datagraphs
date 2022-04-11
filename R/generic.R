@@ -5,13 +5,10 @@
 
 #' Check/test a datagraph object's consistency
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
-#'
-#' @examples
 check <- function(x, ...) {
   UseMethod("check", x)
 }
@@ -19,10 +16,9 @@ check <- function(x, ...) {
 
 #' Constructors of datagraph objects
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 as.datagraph <- function(x, ...) {
   UseMethod("as.datagraph", x)
@@ -31,10 +27,9 @@ as.datagraph <- function(x, ...) {
 
 #' @title Add vertices
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname add_vertices
 #' @export
 add_vertex <- function(x, ...) {
@@ -42,10 +37,9 @@ add_vertex <- function(x, ...) {
 }
 
 
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname add_vertices
 #' @export
 add_vertices <- function(x, ...) {
@@ -53,6 +47,8 @@ add_vertices <- function(x, ...) {
 }
 
 
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #' @rdname vertices
 #' @export
 V <- function(x, ...) {
@@ -60,16 +56,16 @@ V <- function(x, ...) {
 }
 
 #' List all vertices in a graph
-#' @param x see S3 methods
-#'
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #' @rdname vertices
 #' @export
 vertices <- function(x, ...) {
   UseMethod("vertices", x)
 }
 
-
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #' @rdname edges
 #' @export
 E <- function(x, ...) {
@@ -77,6 +73,8 @@ E <- function(x, ...) {
 }
 
 #' List all edges in a graph
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #' @rdname edges
 #' @export
 edges <- function(x, ...) {
@@ -86,11 +84,10 @@ edges <- function(x, ...) {
 
 #' Remove vertices from a x
 #'
-#' @param x
-#' @param vertex
-#' @param ...
+#' @param x see the S3 methods
+#' @param vertex a vertex object
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 remove_vertex <- function(x, vertex, ...) {
   UseMethod("remove_vertex", x)
@@ -99,18 +96,20 @@ remove_vertex <- function(x, vertex, ...) {
 
 #' Remove vertices from a graph
 #'
-#' @param x
-#' @param vertices
+#' @param x see the S3 methods
+#' @param vertices a vector of vertices' ids
 #' @param ... passed to individual methods
 #'
-#' @return
 #' @export
 remove_vertices <- function(x, vertices, ...) {
   UseMethod("remove_vertices", x)
 }
 
+#' Add an edge
+#'
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #' @rdname add_edges
-#' @return
 #' @export
 add_edge <- function(x, ...) {
   UseMethod("add_edge", x)
@@ -122,16 +121,14 @@ add_edge <- function(x, ...) {
 #' @param x see S3 methods
 #' @param ... passed to individual methods
 #'
-#' @return
 #' @export
 add_edges <- function(x, ...) {
   UseMethod("add_edges", x)
 }
 
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname remove_edges
 #' @export
 remove_edge <- function(x, ...) {
@@ -141,10 +138,9 @@ remove_edge <- function(x, ...) {
 
 #' Remove edges between vertices
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 remove_edges <- function(x, ...) {
   UseMethod("remove_edges", x)
@@ -152,10 +148,9 @@ remove_edges <- function(x, ...) {
 
 #' Test if two vertices are adjacent (direct neighbors)
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 are_adjacent <- function(x, ...) {
   UseMethod("are_adjacent", x)
@@ -164,10 +159,9 @@ are_adjacent <- function(x, ...) {
 
 #' @description neighbors - adjacent vertices
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname neighborhood
 #' @export
 neighbors <- function(x, ...) {
@@ -176,10 +170,9 @@ neighbors <- function(x, ...) {
 
 #' @description neighbors_in - adjacent vertices following incoming edges
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname neighborhood
 #' @export
 neighbors_in <- function(x, ...) {
@@ -189,10 +182,9 @@ neighbors_in <- function(x, ...) {
 
 #' @description neighbors_out - adjacent vertices following outgoing edges
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname neighborhood
 #' @export
 neighbors_out <- function(x, ...) {
@@ -201,10 +193,9 @@ neighbors_out <- function(x, ...) {
 
 #' @title Adjacent vertices
 #'
-#' @param x see individual S3 methods
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @rdname neighborhood
 #' @export
 neighborhood <- function(x, ...) {
@@ -213,10 +204,9 @@ neighborhood <- function(x, ...) {
 
 #' Test that graph contains cycles
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 detect_cycles <- function(x, ...) {
   UseMethod("detect_cycles", x)
@@ -224,10 +214,9 @@ detect_cycles <- function(x, ...) {
 
 #' Collapse vertices
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 collapse_vertices <- function(x, ...) {
   UseMethod("collapse_vertices", x)
@@ -236,10 +225,9 @@ collapse_vertices <- function(x, ...) {
 
 #' Make a copy
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 copy_of <- function(x, ...) {
   UseMethod("copy_of", x)
@@ -248,10 +236,10 @@ copy_of <- function(x, ...) {
 
 #' Run a function for each member.
 #'
-#' @param x
-#' @param ...
+#' @param x see the S3 methods
+#' @param f function
+#' @param ... args passed to the S3 methods
 #'
-#' @return
 #' @export
 foreach <- function(x, f, ...) {
   UseMethod("foreach", x)

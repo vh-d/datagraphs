@@ -7,10 +7,11 @@
 foreach(x, f, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{see the S3 methods}
 
+\item{f}{function}
+
+\item{...}{args passed to the S3 methods}
 }
 \description{
 Run a function for each member.

@@ -16,7 +16,11 @@ vertices(x, ...)
 \method{vertices}{datagraph}(x, sorted = FALSE)
 }
 \arguments{
-\item{x}{see S3 methods}
+\item{x}{see the S3 methods}
+
+\item{...}{args passed to the S3 methods}
+
+\item{sorted}{logical; when TRYE the result is sorted.}
 }
 \description{
 List all vertices in a graph

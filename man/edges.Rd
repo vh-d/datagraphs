@@ -15,6 +15,13 @@ edges(x, ...)
 
 \method{edges}{datagraph}(x, sorted = FALSE)
 }
+\arguments{
+\item{x}{datagraph object}
+
+\item{...}{args passed to the S3 methods}
+
+\item{sorted}{logical; sort the result?}
+}
 \description{
 List all edges in a graph
 }

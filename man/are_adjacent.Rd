@@ -7,10 +7,9 @@
 are_adjacent(x, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{see the S3 methods}
 
+\item{...}{args passed to the S3 methods}
 }
 \description{
 Test if two vertices are adjacent (direct neighbors)

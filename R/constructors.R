@@ -46,6 +46,9 @@ datagraph <- function() {
   return(graph)
 }
 
+#' Function to check if an object is a datagraph
+#' @param x an R object
+#'
 #' @export
 is.datagraph <- function(x) {
   "datagraph" %in% class(x)

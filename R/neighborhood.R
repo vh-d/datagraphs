@@ -45,6 +45,11 @@ neighbors_out.datagraph <- function(x, vertices, names = FALSE, useNames = TRUE)
   unlist(lapply(mget(vertices, envir = x), neighbors_out.datagraph_vertex, names = names), use.names = useNames)
 }
 
+#' @param x a datagraph object
+#'
+#' @param vertices see neighbors_in and neighbors_out methods
+#' @param mode character; one of "in"/"out"/"all"
+#'
 #' @rdname neighborhood
 #' @export
 neighbors.datagraph <- function(x, vertices, mode = "all", names = FALSE) {

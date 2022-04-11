@@ -28,7 +28,9 @@ add_vertices(x, ...)
 \method{add_vertices}{data.table}(x, graph)
 }
 \arguments{
-\item{...}{}
+\item{x}{see the S3 methods}
+
+\item{...}{args passed to the S3 methods}
 
 \item{vertex}{id of a vertex}
 
@@ -39,11 +41,6 @@ add_vertices(x, ...)
 \item{to}{vector of vertices to connect from}
 
 \item{vertices}{vector of new ids}
-}
-\value{
-
-
-
 }
 \description{
 Add vertices

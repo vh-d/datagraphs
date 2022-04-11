@@ -34,26 +34,19 @@ neighborhood(x, ...)
 \method{neighborhood}{datagraph}(x, vertices, order = 1000, mode = "all", names = FALSE)
 }
 \arguments{
-\item{x}{see individual S3 methods}
+\item{x}{a datagraph object}
 
-\item{...}{}
+\item{...}{args passed to the S3 methods}
 
 \item{names}{logical; when TRUE only names of the vertices are returned, when FALSE -> vertex objects are returned}
+
+\item{vertices}{see neighbors_in and neighbors_out methods}
 
 \item{useNames}{logical; when TRUE, a named list/vector is returned}
 
 \item{mode}{character; "all", "in" our "out}
 
 \item{order}{integer; how far from the node to look}
-}
-\value{
-
-
-
-
-
-
-
 }
 \description{
 neighbors - adjacent vertices

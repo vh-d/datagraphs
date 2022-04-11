@@ -63,7 +63,7 @@ add_vertices.data.table <- function(x, graph) {
 }
 
 
-
+#' @param sorted logical; when TRYE the result is sorted.
 #' @rdname vertices
 #' @export
 V.datagraph <- function(x, sorted = FALSE) {
@@ -76,6 +76,8 @@ vertices.datagraph <- function(x, sorted = FALSE) {
   as.list.environment(x, sorted = sorted)
 }
 
+#' @param x datagraph object
+#' @param sorted logical; sort the result?
 #' @rdname edges
 #' @export
 E.datagraph <- function(x, sorted = FALSE) {
@@ -227,6 +229,7 @@ add_edge.list <- function(x, graph) {
 }
 
 
+#' @param edges passed to S3 methods of add_edges
 #' @rdname add_edges
 #' @export
 add_edges.datagraph <- function(x, edges) {

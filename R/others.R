@@ -33,6 +33,7 @@ all.equal.datagraph_edgelist <- function(current, target, ...) {
   all.equal.environment(current, target, all.names = TRUE, evaluate = FALSE)
 }
 
+#' @rdname check
 #' @export
 check.datagraph <- function(x) {
   el <- x[[".edges"]]

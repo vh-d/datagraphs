@@ -7,10 +7,11 @@
 remove_vertex(x, vertex, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{see the S3 methods}
 
+\item{vertex}{a vertex object}
+
+\item{...}{args passed to the S3 methods}
 }
 \description{
 Remove vertices from a x

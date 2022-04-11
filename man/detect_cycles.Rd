@@ -7,10 +7,9 @@
 detect_cycles(x, ...)
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{x}{see the S3 methods}
 
+\item{...}{args passed to the S3 methods}
 }
 \description{
 Test that graph contains cycles
